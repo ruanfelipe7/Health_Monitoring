@@ -1,0 +1,581 @@
+{
+	"info": {
+		"_postman_id": "1a2b9a6e-5e6b-4be0-9cb9-3a525c1f3807",
+		"name": "Testes_Backend_Projeto_Embarcados",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Pacientes",
+			"item": [
+				{
+					"name": "POST  /pacientes",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "nome",
+									"value": "Ruan Felipe",
+									"type": "text"
+								},
+								{
+									"key": "cpf",
+									"value": "21312",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "felipealmeida@.com",
+									"type": "text"
+								},
+								{
+									"key": "senha",
+									"value": "12345",
+									"type": "text"
+								},
+								{
+									"key": "telefone",
+									"value": "124124",
+									"type": "text"
+								},
+								{
+									"key": "medico",
+									"value": "3",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8082/pacientes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"pacientes"
+							]
+						},
+						"description": "Inserir Paciente"
+					},
+					"response": []
+				},
+				{
+					"name": "GET  /pacientes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/pacientes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"pacientes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET  /pacientes/:id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/pacientes/19",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"pacientes",
+								"19"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET  /pacientes/:nome",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/pacientes/nome/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"pacientes",
+								"nome",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT  /pacientes/:id",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "nome",
+									"value": "Jorge 5",
+									"type": "text"
+								},
+								{
+									"key": "cpf",
+									"value": "190",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "jorge@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "senha",
+									"value": "123",
+									"type": "text"
+								},
+								{
+									"key": "telefone",
+									"value": "9090",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8082/pacientes/16",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"pacientes",
+								"16"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE  /pacientes/:id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "nome",
+									"value": "Jorge 5",
+									"type": "text"
+								},
+								{
+									"key": "cpf",
+									"value": "190",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "jorge@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "senha",
+									"value": "123",
+									"type": "text"
+								},
+								{
+									"key": "telefone",
+									"value": "9090",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8082/pacientes/17",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"pacientes",
+								"17"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Medicos",
+			"item": [
+				{
+					"name": "GET  /medicos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/medicos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"medicos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET  /medicos/:id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/medicos/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"medicos",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET  /medicos/:nome",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/medicos/nome/a",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"medicos",
+								"nome",
+								"a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST  /medicos",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "nome",
+									"value": "Tiradentes",
+									"type": "text"
+								},
+								{
+									"key": "cpf",
+									"value": "2133",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "tiradentes@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "senha",
+									"value": "123",
+									"type": "text"
+								},
+								{
+									"key": "telefone",
+									"value": "1423",
+									"type": "text"
+								},
+								{
+									"key": "especialidade",
+									"value": "Dentes",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8082/medicos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"medicos"
+							]
+						},
+						"description": "Inserir Paciente"
+					},
+					"response": []
+				},
+				{
+					"name": "PUT  /medicos/:id",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "nome",
+									"value": "Natan",
+									"type": "text"
+								},
+								{
+									"key": "cpf",
+									"value": "12830",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "natan@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "senha",
+									"value": "123",
+									"type": "text"
+								},
+								{
+									"key": "telefone",
+									"value": "9090",
+									"type": "text"
+								},
+								{
+									"key": "especialidade",
+									"value": "Cabeça",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8082/medicos/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"medicos",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE  /medicos/:id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "nome",
+									"value": "Jorge 5",
+									"type": "text"
+								},
+								{
+									"key": "cpf",
+									"value": "190",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "jorge@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "senha",
+									"value": "123",
+									"type": "text"
+								},
+								{
+									"key": "telefone",
+									"value": "9090",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8082/medicos/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"medicos",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Dados",
+			"item": [
+				{
+					"name": "POST /dados",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/dados",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"dados"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /dados",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/dados",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"dados"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /dados/:id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/dados/16",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"dados",
+								"16"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /dados/temperatura/:id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/dados/temperatura/16",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"dados",
+								"temperatura",
+								"16"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /dados/oximetro/:id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/dados/oximetro/16",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"dados",
+								"oximetro",
+								"16"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /dados/bpm/:id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/dados/bpm/16",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"dados",
+								"bpm",
+								"16"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
