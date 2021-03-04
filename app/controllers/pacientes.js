@@ -1,6 +1,6 @@
 var Usuario = require('../models/usuario')
 var Paciente = require('../models/paciente')
-
+const bcrypt = require('bcryptjs')
 const conexao = require('../../config/db').con
 
 
@@ -26,38 +26,44 @@ module.exports = function(app){
             erros.push({texto: "Telefone do Paciente Inválido"})
         }
         if(erros.length > 0){
+            console.log(erros)
             return;
         }
-            console.log(erros)
 
         let nome = req.body.nome;
         let cpf = req.body.cpf;
         let email = req.body.email;
-        let senha = req.body.senha;
         let telefone = req.body.telefone;
         let tipo = "paciente";
-
         
-        var novoUsuario = new Usuario(nome, cpf, email, senha, telefone, tipo)
-        conexao.query("INSERT INTO usuarios SET ?", novoUsuario, (error, resposta) => {
-            if(error){
-                console.error(error);
-            }else{
-                console.log("Novo usuario adicionado");
-            }
-            novoUsuario.id = `${resposta.insertId}`
-            var novoPaciente = new Paciente(novoUsuario.id)
-    
-            conexao.query("INSERT INTO pacientes SET ?", novoPaciente, (error, resposta) => {
+        bcrypt.hash(req.body.senha, 10).then((senha) => {  //crtiptografando a senha
+            
+            var novoUsuario = new Usuario(nome, cpf, email, senha, telefone, tipo)
+            
+            conexao.query("INSERT INTO usuarios SET ?", novoUsuario, (error, resposta) => {
                 if(error){
                     console.error(error);
                 }else{
-                    console.log("Novo paciente adicionado");
-                    novoPaciente.id = `${resposta.insertId}`
-                    res.json({usuario: novoUsuario, paciente: novoPaciente})
+                    console.log("Novo usuario adicionado");
                 }
+                novoUsuario.id = `${resposta.insertId}`
+                var novoPaciente = new Paciente(novoUsuario.id)
+        
+                conexao.query("INSERT INTO pacientes SET ?", novoPaciente, (error, resposta) => {
+                    if(error){
+                        console.error(error);
+                    }else{
+                        console.log("Novo paciente adicionado");
+                        novoPaciente.id = `${resposta.insertId}`
+                        res.json({usuario: novoUsuario, paciente: novoPaciente})
+                    }
+                })
             })
+        
+        }).catch((error) => { //Erro ao criptografar a senha
+            throw error
         })
+        
     }
 
     controllerPacientes.buscarPaciente = function(req, res) {

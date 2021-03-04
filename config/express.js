@@ -5,6 +5,7 @@ var cors = require('cors');
 var pacientesRouter = require("../app/routes/pacientes")
 var medicosRouter = require("../app/routes/medicos")
 var dadosRouter = require("../app/routes/dados")
+var loginRouter = require("../app/routes/login")
 
 module.exports = function() {
 	var app = express();
@@ -27,6 +28,7 @@ module.exports = function() {
 	pacientesRouter(app);
 	medicosRouter(app);
 	dadosRouter(app);
+	loginRouter(app)
 
 	return app;
 };

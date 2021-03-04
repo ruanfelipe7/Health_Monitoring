@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Tempo de geração: 03/03/2021 às 20:02
+-- Tempo de geração: 04/03/2021 às 01:35
 -- Versão do servidor: 10.4.17-MariaDB
 -- Versão do PHP: 7.4.15
 
@@ -42,7 +42,8 @@ CREATE TABLE `dados` (
 
 INSERT INTO `dados` (`ID`, `id_paciente`, `bpm`, `oximetro`, `temperatura`, `data`) VALUES
 (4, 16, 49, 15, 32, '2021-03-03 18:32:49'),
-(5, 16, 17, 15, 50, '2021-03-03 18:50:17');
+(5, 16, 17, 15, 50, '2021-03-03 18:50:17'),
+(6, 16, 5, 18, 46, '2021-03-03 21:46:05');
 
 --
 -- Gatilhos `dados`
@@ -80,7 +81,8 @@ CREATE TABLE `medicos` (
 --
 
 INSERT INTO `medicos` (`id`, `id_usuario`, `especialidade`) VALUES
-(5, 22, 'Dentes');
+(5, 22, 'Dentes'),
+(6, 34, 'Ossos');
 
 --
 -- Gatilhos `medicos`
@@ -117,7 +119,11 @@ CREATE TABLE `pacientes` (
 --
 
 INSERT INTO `pacientes` (`id`, `id_usuario`) VALUES
-(16, 19);
+(16, 19),
+(18, 23),
+(26, 31),
+(27, 32),
+(29, 35);
 
 --
 -- Gatilhos `pacientes`
@@ -212,7 +218,29 @@ INSERT INTO `system_log` (`operacao`, `usuario`, `data`, `tabela`) VALUES
 ('update', 'root@localhost', '2021-03-03 17:59:51', 'medicos'),
 ('delete', 'root@localhost', '2021-03-03 18:01:07', 'medicos'),
 ('insert', 'root@localhost', '2021-03-03 18:32:49', 'dados'),
-('insert', 'root@localhost', '2021-03-03 18:50:17', 'dados');
+('insert', 'root@localhost', '2021-03-03 18:50:17', 'dados'),
+('insert', 'root@localhost', '2021-03-03 21:36:27', 'pacientes'),
+('insert', 'root@localhost', '2021-03-03 21:46:05', 'dados'),
+('insert', 'root@localhost', '2021-03-03 21:52:02', 'pacientes'),
+('delete', 'root@localhost', '2021-03-03 21:52:23', 'pacientes'),
+('insert', 'root@localhost', '2021-03-03 22:41:04', 'pacientes'),
+('insert', 'root@localhost', '2021-03-03 23:09:08', 'pacientes'),
+('delete', 'root@localhost', '2021-03-03 23:17:13', 'pacientes'),
+('delete', 'root@localhost', '2021-03-03 23:17:17', 'pacientes'),
+('insert', 'root@localhost', '2021-03-03 23:17:33', 'pacientes'),
+('insert', 'root@localhost', '2021-03-03 23:18:41', 'pacientes'),
+('insert', 'root@localhost', '2021-03-03 23:19:37', 'pacientes'),
+('insert', 'root@localhost', '2021-03-03 23:20:10', 'pacientes'),
+('delete', 'root@localhost', '2021-03-03 23:22:39', 'pacientes'),
+('delete', 'root@localhost', '2021-03-03 23:22:42', 'pacientes'),
+('delete', 'root@localhost', '2021-03-03 23:22:46', 'pacientes'),
+('delete', 'root@localhost', '2021-03-03 23:22:49', 'pacientes'),
+('insert', 'root@localhost', '2021-03-03 23:25:20', 'pacientes'),
+('insert', 'root@localhost', '2021-03-03 23:26:54', 'pacientes'),
+('insert', 'root@localhost', '2021-03-03 23:27:13', 'pacientes'),
+('delete', 'root@localhost', '2021-03-03 23:28:23', 'pacientes'),
+('insert', 'root@localhost', '2021-03-03 23:34:54', 'medicos'),
+('insert', 'root@localhost', '2021-03-04 00:25:20', 'pacientes');
 
 -- --------------------------------------------------------
 
@@ -225,7 +253,7 @@ CREATE TABLE `usuarios` (
   `nome` varchar(50) NOT NULL,
   `cpf` varchar(15) NOT NULL,
   `email` varchar(50) NOT NULL,
-  `senha` varchar(32) NOT NULL,
+  `senha` varchar(100) NOT NULL,
   `telefone` varchar(14) NOT NULL,
   `tipo` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -236,7 +264,12 @@ CREATE TABLE `usuarios` (
 
 INSERT INTO `usuarios` (`id`, `nome`, `cpf`, `email`, `senha`, `telefone`, `tipo`) VALUES
 (19, 'Jorge 5', '190', 'jorge@gmail.com', '123', '9090', 'paciente'),
-(22, 'Tiradentes', '2133', 'tiradentes@gmail.com', '123', '1423', 'medico');
+(22, 'Tiradentes', '2133', 'tiradentes@gmail.com', '123', '1423', 'medico'),
+(23, 'Ruan Felipe', '21312', 'felipealmeida@.com', '12345', '124124', 'paciente'),
+(31, 'Felipe 4', '213', 'felipe4@gmail.com', '$2a$15$ORV79mr3basadTw1arV/GeriX4XfoBFYcpe8hy/YrgMmQT5Bz8Caa', '124124', 'paciente'),
+(32, 'Felipe 5', '123123', 'felipe5@gmail.com', '$2a$10$OPczHwzTCU/QRq..w2vNIuJPDFygXhkxQeX1ugjoi9RB21DsRgCVq', '2133', 'paciente'),
+(34, 'Dom Pedro I', '1312', 'dompedro1@gmail.com', '$2a$10$04iw2NOsxyEq0np2ABpyceJC9elAHFvFxcvXuVVRzuNEGeO/KOBMq', '32131', 'medico'),
+(35, 'Felipe 7', '21312', 'felipe7@gmail.com', '$2a$10$uz5/IV81fjO/nEXuCyLLlO7OOT3MK4y5dId3RlH04uMSKQk6uKpzK', '2133', 'paciente');
 
 --
 -- Índices para tabelas despejadas
@@ -284,25 +317,25 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de tabela `dados`
 --
 ALTER TABLE `dados`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de tabela `medicos`
 --
 ALTER TABLE `medicos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de tabela `pacientes`
 --
 ALTER TABLE `pacientes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT de tabela `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- Restrições para tabelas despejadas

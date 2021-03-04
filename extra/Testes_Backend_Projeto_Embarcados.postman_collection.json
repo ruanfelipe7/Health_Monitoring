@@ -18,7 +18,7 @@
 							"urlencoded": [
 								{
 									"key": "nome",
-									"value": "Ruan Felipe",
+									"value": "Felipe 7",
 									"type": "text"
 								},
 								{
@@ -28,17 +28,17 @@
 								},
 								{
 									"key": "email",
-									"value": "felipealmeida@.com",
+									"value": "felipe7@gmail.com",
 									"type": "text"
 								},
 								{
 									"key": "senha",
-									"value": "12345",
+									"value": "123",
 									"type": "text"
 								},
 								{
 									"key": "telefone",
-									"value": "124124",
+									"value": "2133",
 									"type": "text"
 								},
 								{
@@ -210,7 +210,7 @@
 							]
 						},
 						"url": {
-							"raw": "http://localhost:8082/pacientes/17",
+							"raw": "http://localhost:8082/pacientes/28",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -218,7 +218,7 @@
 							"port": "8082",
 							"path": [
 								"pacientes",
-								"17"
+								"28"
 							]
 						}
 					},
@@ -299,17 +299,17 @@
 							"urlencoded": [
 								{
 									"key": "nome",
-									"value": "Tiradentes",
+									"value": "Dom Pedro I",
 									"type": "text"
 								},
 								{
 									"key": "cpf",
-									"value": "2133",
+									"value": "1312",
 									"type": "text"
 								},
 								{
 									"key": "email",
-									"value": "tiradentes@gmail.com",
+									"value": "dompedro1@gmail.com",
 									"type": "text"
 								},
 								{
@@ -319,12 +319,12 @@
 								},
 								{
 									"key": "telefone",
-									"value": "1423",
+									"value": "32131",
 									"type": "text"
 								},
 								{
 									"key": "especialidade",
-									"value": "Dentes",
+									"value": "Ossos",
 									"type": "text"
 								}
 							]
@@ -570,6 +570,64 @@
 								"dados",
 								"bpm",
 								"16"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "POST /login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "felipe7@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "senha",
+									"value": "123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8082/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /logout",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"logout"
 							]
 						}
 					},

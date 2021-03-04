@@ -1,5 +1,6 @@
 var Usuario = require('../models/usuario')
 var Medico = require('../models/medico')
+const bcrypt = require('bcryptjs')
 
 const conexao = require('../../config/db').con
 
@@ -36,33 +37,38 @@ module.exports = function(app){
         let nome = req.body.nome;
         let cpf = req.body.cpf;
         let email = req.body.email;
-        let senha = req.body.senha;
         let telefone = req.body.telefone;
         let tipo = "medico";
 
-        var novoUsuario = new Usuario(nome, cpf, email, senha, telefone, tipo)
-        conexao.query("INSERT INTO usuarios SET ?", novoUsuario, (error, resposta) => {
-            if(error){
-                console.error(error);
-                res.render('medico_novo', {erros: erros});
-            }
-            console.log("Novo usuario adicionado");
-            
-            novoUsuario.id = `${resposta.insertId}`;
-            let especialidade = req.body.especialidade;
-            
-            var novoMedico = new Medico(novoUsuario.id, especialidade )
-
-            conexao.query("INSERT INTO medicos SET ?", novoMedico, (error, resposta) => {
+        bcrypt.hash(req.body.senha, 10).then((senha) => {  //crtiptografando a senha
+            var novoUsuario = new Usuario(nome, cpf, email, senha, telefone, tipo)
+            conexao.query("INSERT INTO usuarios SET ?", novoUsuario, (error, resposta) => {
                 if(error){
                     console.error(error);
                     res.render('medico_novo', {erros: erros});
-                } 
-                console.log("Novo medico adicionado");
-                novoMedico.id = `${resposta.insertId}`;
-                res.json({usuario:novoUsuario,medico:novoMedico})       
-            })    
+                }
+                console.log("Novo usuario adicionado");
+                
+                novoUsuario.id = `${resposta.insertId}`;
+                let especialidade = req.body.especialidade;
+                
+                var novoMedico = new Medico(novoUsuario.id, especialidade )
+
+                conexao.query("INSERT INTO medicos SET ?", novoMedico, (error, resposta) => {
+                    if(error){
+                        console.error(error);
+                        res.render('medico_novo', {erros: erros});
+                    } 
+                    console.log("Novo medico adicionado");
+                    novoMedico.id = `${resposta.insertId}`;
+                    res.json({usuario:novoUsuario,medico:novoMedico})       
+                })    
+            })
+        }).catch((error) => {
+            throw error
         })
+
+        
 
     }
 
