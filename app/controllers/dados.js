@@ -1,16 +1,21 @@
-var Paciente = require('../models/paciente')
 var Dados = require('../models/dados')
 const conexao = require('../../config/db').con
+// const io = require('../../index');
 
 module.exports = function(app){
     var controllerDados = {};
-    
-    controllerDados.adicionarDados = function(req, res) {
+
+    var valorTemperatura = 0;
+    var valorOximetro = 0;
+    var valorEcg = 0;
+
+    controllerDados.adicionarDados = function(req, res, next) {
+  
         var data = new Date();
         let id_paciente = 16;
-        let bpm = data.getUTCSeconds();
-        let oximetro = data.getHours();
-        let temperatura = data.getMinutes();
+        let bpm = valorEcg
+        let oximetro = valorOximetro
+        let temperatura = valorTemperatura
 
         var novoDado = new Dados(id_paciente, bpm, oximetro, temperatura, data)
         
@@ -23,6 +28,29 @@ module.exports = function(app){
                 console.log("Novo dado adicionado");
             }    
         })
+        
+        
+    }
+
+    controllerDados.getTemperatura = function(req, res, next){
+        var dadoTemperatura = req.body.data[0];
+        valorTemperatura = dadoTemperatura.Temperatura.value;
+        console.log("AQUI NA TEMP: " + valorTemperatura);
+        res.send("OK");
+    }
+
+    controllerDados.getOximetro = function(req, res, next){
+        var dadoOximetro = req.body.data[0];
+        valorOximetro = dadoOximetro.Oximetro.value;
+        console.log("AQUI NA OX: " + valorOximetro);
+        res.send("OK");
+    }
+
+    controllerDados.getEcg = function(req, res, next){
+        var dadoEcg = req.body.data[0];
+        valorEcg = dadoEcg.Ecg.value;
+        console.log("AQUI NO ECG: " + valorEcg);
+        res.send("OK");
     }
 
     controllerDados.buscarDados = function(req, res) {

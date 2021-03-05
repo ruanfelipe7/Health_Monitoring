@@ -4,6 +4,10 @@ module.exports = function(app){
 
     app.post("/dados", controller.adicionarDados);
 
+    app.post("/dados/temperatura", controller.getTemperatura);
+    app.post("/dados/oximetro", controller.getOximetro);
+    app.post("/dados/ecg", controller.getEcg);
+
     app.get("/dados", controller.buscarDados);
     //ID = ID_PACIENTE
     app.get("/dados/:id_paciente", controller.buscarDadosIdPaciente);

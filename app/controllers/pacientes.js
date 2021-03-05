@@ -26,8 +26,7 @@ module.exports = function(app){
             erros.push({texto: "Telefone do Paciente Inválido"})
         }
         if(erros.length > 0){
-            console.log(erros)
-            return;
+            res.json({erros: erros});
         }
 
         let nome = req.body.nome;
@@ -43,6 +42,7 @@ module.exports = function(app){
             conexao.query("INSERT INTO usuarios SET ?", novoUsuario, (error, resposta) => {
                 if(error){
                     console.error(error);
+                    res.send("Falha ao inserir o usuário no banco de dados");
                 }else{
                     console.log("Novo usuario adicionado");
                 }
@@ -52,6 +52,7 @@ module.exports = function(app){
                 conexao.query("INSERT INTO pacientes SET ?", novoPaciente, (error, resposta) => {
                     if(error){
                         console.error(error);
+                        res.send("Falha ao inserir o paciente no banco de dados");
                     }else{
                         console.log("Novo paciente adicionado");
                         novoPaciente.id = `${resposta.insertId}`
