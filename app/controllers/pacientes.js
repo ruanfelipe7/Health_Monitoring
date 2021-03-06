@@ -2,88 +2,113 @@ var Usuario = require('../models/usuario')
 var Paciente = require('../models/paciente')
 const bcrypt = require('bcryptjs')
 const conexao = require('../../config/db').con
+const { transformAuthInfo } = require('passport')
 
 
 module.exports = function(app){
 
     var controllerPacientes = {}
 
-    controllerPacientes.adicionarPaciente = function(req, res) {
-        var erros = [];
+    controllerPacientes.adicionarPaciente = function(req, res, next) {
+        const validarDados = function(){
+            var erros = [];
 
 
-        if(!req.body.nome || typeof req.body.nome == undefined || req.body.nome == null){
-            erros.push({texto: "Nome do Paciente Inválido"})
-        }
-        if(!req.body.cpf || typeof req.body.cpf == undefined || req.body.cpf == null){
-            erros.push({texto: "CPF do Paciente Inválido"})
-        }
-        if(!req.body.email || typeof req.body.email == undefined || req.body.email == null){
-            erros.push({texto: "E-mail do Paciente Inválido"})
-        }
-        if(!req.body.senha || typeof req.body.senha == undefined || req.body.senha == null){
-            erros.push({texto: "Senha do Paciente Inválida"})
-        }
-        if(!req.body.telefone || typeof req.body.telefone == undefined || req.body.telefone == null){
-            erros.push({texto: "Telefone do Paciente Inválido"})
-        }
-        //Chegando se existe algum email igual no bacno
-        conexao.query(" SELECT id FROM usuarios WHERE email = ?", req.body.email, (error, rows) => {
-            if(error){
-                throw error;
+            if(!req.body.nome || typeof req.body.nome == undefined || req.body.nome == null){
+                erros.push({texto: "Nome do Paciente Inválido"})
             }
-            if(rows.length){
-                erros.push({texto: "Email já cadastrado"})
-            }                
-        })
-        //Chegando se existe algum cpf igual no banco
-        conexao.query(" SELECT id FROM usuarios WHERE cpf = ?", req.body.cpf, (error, rows) => {
-            if(error){
-                throw error;
+            if(!req.body.cpf || typeof req.body.cpf == undefined || req.body.cpf == null){
+                erros.push({texto: "CPF do Paciente Inválido"})
             }
-            if(rows.length){
-                erros.push({texto: "CPF já cadastrado"})
-            }                
-        }) 
-        if(erros.length > 0){
-            res.json({erros: erros});
+            if(!req.body.email || typeof req.body.email == undefined || req.body.email == null){
+                erros.push({texto: "E-mail do Paciente Inválido"})
+            }
+            if(!req.body.senha || typeof req.body.senha == undefined || req.body.senha == null){
+                erros.push({texto: "Senha do Paciente Inválida"})
+            }
+            if(!req.body.telefone || typeof req.body.telefone == undefined || req.body.telefone == null){
+                erros.push({texto: "Telefone do Paciente Inválido"})
+            }
+
+            if(erros.length > 0){
+                res.json({erros: erros});
+                return false;
+            }else{
+                return true;
+            }
         }
 
-        let nome = req.body.nome;
-        let cpf = req.body.cpf;
-        let email = req.body.email;
-        let telefone = req.body.telefone;
-        let tipo = "paciente";
-        
-        bcrypt.hash(req.body.senha, 10).then((senha) => {  //crtiptografando a senha
-            
-            var novoUsuario = new Usuario(nome, cpf, email, senha, telefone, tipo)
-            
-            conexao.query("INSERT INTO usuarios SET ?", novoUsuario, (error, resposta) => {
+        const verificarCPF = function(){
+            conexao.query(" SELECT id FROM usuarios WHERE cpf = ?", req.body.cpf, (error, rows) => {
                 if(error){
-                    console.error(error);
-                    res.send("Falha ao inserir o usuário no banco de dados");
-                }else{
-                    console.log("Novo usuario adicionado");
+                    throw error;
                 }
-                novoUsuario.id = `${resposta.insertId}`
-                var novoPaciente = new Paciente(novoUsuario.id)
+                if(rows.length > 0){
+                    res.json({erro : "CPF já cadastrado"});
+                }else{
+                    verificarEmail();
+                }
+                                
+            })
+        }
+
+        const verificarEmail = function(){
+            conexao.query(" SELECT id FROM usuarios WHERE email = ?", req.body.email, (error, rows) => {
+            
+                if(error){
+                    throw error;
+                }
+                if(rows.length > 0){
+                    res.json({erro: "Email já cadastrado"});
+                }else{
+                    cadastrarPaciente();
+                }
+                               
+            })
+        } 
         
-                conexao.query("INSERT INTO pacientes SET ?", novoPaciente, (error, resposta) => {
+        const cadastrarPaciente = function(){
+            let nome = req.body.nome;
+            let cpf = req.body.cpf;
+            let email = req.body.email;
+            let telefone = req.body.telefone;
+            let tipo = "paciente";
+            
+            bcrypt.hash(req.body.senha, 10).then((senha) => {  //crtiptografando a senha
+                
+                var novoUsuario = new Usuario(nome, cpf, email, senha, telefone, tipo)
+                
+                conexao.query("INSERT INTO usuarios SET ?", novoUsuario, (error, resposta) => {
                     if(error){
                         console.error(error);
-                        res.send("Falha ao inserir o paciente no banco de dados");
+                        res.send("Falha ao inserir o usuário no banco de dados");
                     }else{
-                        console.log("Novo paciente adicionado");
-                        novoPaciente.id = `${resposta.insertId}`
-                        res.json({usuario: novoUsuario, paciente: novoPaciente})
+                        console.log("Novo usuario adicionado");
                     }
+                    novoUsuario.id = `${resposta.insertId}`
+                    var novoPaciente = new Paciente(novoUsuario.id)
+            
+                    conexao.query("INSERT INTO pacientes SET ?", novoPaciente, (error, resposta) => {
+                        if(error){
+                            console.error(error);
+                            res.send("Falha ao inserir o paciente no banco de dados");
+                        }else{
+                            console.log("Novo paciente adicionado");
+                            novoPaciente.id = `${resposta.insertId}`
+                            res.json({usuario: novoUsuario, paciente: novoPaciente})
+                        }
+                    })
                 })
+            
+            }).catch((error) => { //Erro ao criptografar a senha
+                throw error
             })
+        }
+        if(validarDados()){
+            verificarCPF();
+        }
         
-        }).catch((error) => { //Erro ao criptografar a senha
-            throw error
-        })
+        
         
     }
 
@@ -132,49 +157,58 @@ module.exports = function(app){
     }
     
     controllerPacientes.editarPaciente = function(req, res) {
-        var erros = [];
-        if(!req.body.nome || typeof req.body.nome == undefined || req.body.nome == null){
-            erros.push({texto: "Nome do Paciente Inválido"})
-        }
-        if(!req.body.cpf || typeof req.body.cpf == undefined || req.body.cpf == null){
-            erros.push({texto: "CPF do Paciente Inválido"})
-        }
-        if(!req.body.email || typeof req.body.email == undefined || req.body.email == null){
-            erros.push({texto: "E-mail do Paciente Inválido"})
-        }
-        if(!req.body.senha || typeof req.body.senha == undefined || req.body.senha == null){
-            erros.push({texto: "Senha do Paciente Inválida"})
-        }
-        if(!req.body.telefone || typeof req.body.telefone == undefined || req.body.telefone == null){
-            erros.push({texto: "Telefone do Paciente Inválido"})
+        const validarCampos = function(){
+            var erros = [];
+            if(!req.body.nome || typeof req.body.nome == undefined || req.body.nome == null){
+                erros.push({texto: "Nome do Paciente Inválido"})
+            }
+            if(!req.body.cpf || typeof req.body.cpf == undefined || req.body.cpf == null){
+                erros.push({texto: "CPF do Paciente Inválido"})
+            }
+            if(!req.body.email || typeof req.body.email == undefined || req.body.email == null){
+                erros.push({texto: "E-mail do Paciente Inválido"})
+            }
+            if(!req.body.senha || typeof req.body.senha == undefined || req.body.senha == null){
+                erros.push({texto: "Senha do Paciente Inválida"})
+            }
+            if(!req.body.telefone || typeof req.body.telefone == undefined || req.body.telefone == null){
+                erros.push({texto: "Telefone do Paciente Inválido"})
+            }
+            if(erros.length > 0){
+                res.json({erros: erros});
+                return false;
+            }else{
+                return true;
+            }
         }
         //Chegando se existe algum email igual no bacno
-        conexao.query(" SELECT id FROM usuarios WHERE email = ?", req.body.email, (error, rows) => {
-            if(error){
-                throw error;
-            }
-            if(rows.length){
-                erros.push({texto: "Email já cadastrado"})
-            }                
-        })
+        const validarEmail = function(id_usuario){
+            conexao.query(" SELECT id FROM usuarios WHERE email = ? AND id != ?", [req.body.email, id_usuario], (error, rows) => {
+                if(error){
+                    throw error;
+                }
+                if(rows.length > 0){
+                    res.json({erro : "Email já cadastrado"});
+                }else{
+                    validarCPF(id_usuario);
+                }                
+            })
+        }    
         //Chegando se existe algum cpf igual no banco
-        conexao.query(" SELECT id FROM usuarios WHERE cpf = ?", req.body.cpf, (error, rows) => {
-            if(error){
-                throw error;
-            }
-            if(rows.length){
-                erros.push({texto: "CPF já cadastrado"})
-            }                
-        }) 
-        if(erros.length > 0){
-            console.log(erros)
-        }
-        const id_paciente = req.params.id
-        conexao.query("SELECT id_usuario FROM pacientes WHERE id = ?", id_paciente, (error, rows) => {
-            if(error) 
-                throw error;
-             
-            var id_usuario = rows[0].id_usuario    
+        const validarCPF = function(id_usuario){
+            conexao.query(" SELECT id FROM usuarios WHERE cpf = ? AND id != ?", [req.body.cpf, id_usuario], (error, rows) => {
+                if(error){
+                    throw error;
+                }
+                if(rows.length > 0){
+                    res.json({erro : "CPF já cadastrado"});
+                }else{
+                    atualizarPaciente(id_usuario);
+                }               
+            })
+        } 
+
+        const atualizarPaciente = function(id_usuario){
             var usuario = {
                 nome: req.body.nome,
                 cpf: req.body.cpf,
@@ -185,11 +219,27 @@ module.exports = function(app){
             conexao.query("UPDATE usuarios SET nome = ?, cpf = ?, email = ?, senha = ?, telefone = ? WHERE id = ?", [usuario.nome, usuario.cpf, usuario.email, usuario.senha, usuario.telefone, id_usuario], (error, result) => {
                 if(error){
                     console.log(error);
+                    res.send("Erro ao atualizar o paciente")
                 }else{
                     res.json(usuario)
                 }  
             })
-        })
+        }
+        
+        const id_paciente = req.params.id
+        const buscarIdUsuario = function(){
+            conexao.query("SELECT id_usuario FROM pacientes WHERE id = ?", id_paciente, (error, rows) => {
+                if(error) 
+                    throw error;
+                 var id_usuario = rows[0].id_usuario    
+                 validarEmail(id_usuario);
+            })
+        }
+
+        if(validarCampos()){
+            buscarIdUsuario()
+        }
+        
     }
 
     controllerPacientes.deletarPaciente = function(req, res){

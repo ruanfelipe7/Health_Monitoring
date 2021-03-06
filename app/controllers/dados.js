@@ -13,9 +13,9 @@ module.exports = function(app){
   
         var data = new Date();
         let id_paciente = 16;
-        let bpm = valorEcg
-        let oximetro = valorOximetro
-        let temperatura = valorTemperatura
+        let bpm = valorEcg;
+        let oximetro = valorOximetro;
+        let temperatura = valorTemperatura;
 
         var novoDado = new Dados(id_paciente, bpm, oximetro, temperatura, data)
         
