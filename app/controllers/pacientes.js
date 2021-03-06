@@ -10,6 +10,8 @@ module.exports = function(app){
 
     controllerPacientes.adicionarPaciente = function(req, res) {
         var erros = [];
+
+
         if(!req.body.nome || typeof req.body.nome == undefined || req.body.nome == null){
             erros.push({texto: "Nome do Paciente Inválido"})
         }
@@ -25,6 +27,24 @@ module.exports = function(app){
         if(!req.body.telefone || typeof req.body.telefone == undefined || req.body.telefone == null){
             erros.push({texto: "Telefone do Paciente Inválido"})
         }
+        //Chegando se existe algum email igual no bacno
+        conexao.query(" SELECT id FROM usuarios WHERE email = ?", req.body.email, (error, rows) => {
+            if(error){
+                throw error;
+            }
+            if(rows.length){
+                erros.push({texto: "Email já cadastrado"})
+            }                
+        })
+        //Chegando se existe algum cpf igual no banco
+        conexao.query(" SELECT id FROM usuarios WHERE cpf = ?", req.body.cpf, (error, rows) => {
+            if(error){
+                throw error;
+            }
+            if(rows.length){
+                erros.push({texto: "CPF já cadastrado"})
+            }                
+        }) 
         if(erros.length > 0){
             res.json({erros: erros});
         }
@@ -128,6 +148,24 @@ module.exports = function(app){
         if(!req.body.telefone || typeof req.body.telefone == undefined || req.body.telefone == null){
             erros.push({texto: "Telefone do Paciente Inválido"})
         }
+        //Chegando se existe algum email igual no bacno
+        conexao.query(" SELECT id FROM usuarios WHERE email = ?", req.body.email, (error, rows) => {
+            if(error){
+                throw error;
+            }
+            if(rows.length){
+                erros.push({texto: "Email já cadastrado"})
+            }                
+        })
+        //Chegando se existe algum cpf igual no banco
+        conexao.query(" SELECT id FROM usuarios WHERE cpf = ?", req.body.cpf, (error, rows) => {
+            if(error){
+                throw error;
+            }
+            if(rows.length){
+                erros.push({texto: "CPF já cadastrado"})
+            }                
+        }) 
         if(erros.length > 0){
             console.log(erros)
         }

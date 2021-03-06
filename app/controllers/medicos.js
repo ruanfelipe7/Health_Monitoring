@@ -28,6 +28,24 @@ module.exports = function(app){
         if(!req.body.especialidade || typeof req.body.especialidade == undefined || req.body.especialidade == null){
             erros.push({texto: "Especialidade do medico Inválida"})
         }
+        //Chegando se existe algum email igual no bacno
+        conexao.query(" SELECT id FROM usuarios WHERE email = ?", req.body.email, (error, rows) => {
+            if(error){
+                throw error;
+            }
+            if(rows.length){
+                erros.push({texto: "Email já cadastrado"})
+            }                
+        })
+        //Chegando se existe algum cpf igual no banco
+        conexao.query(" SELECT id FROM usuarios WHERE cpf = ?", req.body.cpf, (error, rows) => {
+            if(error){
+                throw error;
+            }
+            if(rows.length){
+                erros.push({texto: "CPF já cadastrado"})
+            }                
+        })
         if(erros.length > 0){
             res.send("Erro ao cadastrar o medico")
             console.log(erros)
@@ -137,6 +155,24 @@ module.exports = function(app){
         if(!req.body.especialidade || typeof req.body.especialidade == undefined || req.body.especialidade == null){
             erros.push({texto: "Especialidade do Medico Inválida"})
         }
+        //Chegando se existe algum email igual no bacno
+        conexao.query(" SELECT id FROM usuarios WHERE email = ?", req.body.email, (error, rows) => {
+            if(error){
+                throw error;
+            }
+            if(rows.length){
+                erros.push({texto: "Email já cadastrado"})
+            }                
+        })
+        //Chegando se existe algum cpf igual no banco
+        conexao.query(" SELECT id FROM usuarios WHERE cpf = ?", req.body.cpf, (error, rows) => {
+            if(error){
+                throw error;
+            }
+            if(rows.length){
+                erros.push({texto: "CPF já cadastrado"})
+            }                
+        })
         if(erros.length > 0){
             console.log(erros)
         }
