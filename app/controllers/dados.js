@@ -1,6 +1,6 @@
 var Dados = require('../models/dados')
 const conexao = require('../../config/db').con
-//const io = require('../../index');
+const io = require('../../index');
 
 //console.log(io);
 
@@ -39,24 +39,24 @@ module.exports = function(app){
         valorTemperatura = dadoTemperatura.Temperatura.value;
         console.log("AQUI NA TEMP: " + valorTemperatura);
         
-        // io.on("connection", (socket) => {
-        //     console.log("New client connected");
-        //     if (interval) {
-        //       clearInterval(interval);
-        //     }
-        //     interval = setInterval(() => getApiAndEmit(socket), 500);
-        //     socket.on("disconnect", () => {
-        //       console.log("Client disconnected");
-        //       clearInterval(interval);
-        //     });
-        //   });
+        io.on("connection", (socket) => {
+            console.log("New client connected");
+            if (interval) {
+              clearInterval(interval);
+            }
+            interval = setInterval(() => getApiAndEmit(socket), 500);
+            socket.on("disconnect", () => {
+              console.log("Client disconnected");
+              clearInterval(interval);
+            });
+          });
           
-        //   const getApiAndEmit = socket => {
-        //     const response = new Date();
-        //     console.log("Chamou aqui");
-        //     const temperature = JSON.parse('{ "temperature":"'+new Date().getSeconds()+'"}')
-        //     socket.emit("Temperature", temperature);
-        //   };
+          const getApiAndEmit = socket => {
+            const response = new Date();
+            console.log("Chamou aqui");
+            const temperature = JSON.parse('{ "temperature":"'+valorTemperatura+'"}')
+            socket.emit("Temperature", temperature);
+          };
         
         res.send("OK");
     }

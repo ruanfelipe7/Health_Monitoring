@@ -1,5 +1,6 @@
 const passport = require('passport')
 require("../../config/autenticacao")(passport)
+const jwt = require('../../config/jwt')
 
 module.exports = function(app){
     var controllerLogin = {};
@@ -17,7 +18,8 @@ module.exports = function(app){
                 if(!usuario){
                     res.send("E-mail ou senha incorretos");
                 }else{
-                    res.send("Login efetuado com sucesso");    
+                    const token = jwt.sign({id: usuario.id})
+                    res.json({usuario: usuario, token: token});                        
                 }})
         (req, res, next)
     }
@@ -25,6 +27,10 @@ module.exports = function(app){
     controllerLogin.realizarLogout = function(req, res){
             req.logOut();
             res.send("Logout realizado");
+    }
+
+    controllerLogin.verificarToken = function(req, res) {
+        res.json(req.auth);
     }
 
 

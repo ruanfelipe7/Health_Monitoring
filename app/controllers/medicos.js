@@ -2,8 +2,6 @@ var Usuario = require('../models/usuario')
 var Medico = require('../models/medico')
 const bcrypt = require('bcryptjs')
 const jwt = require('../../config/jwt')
-
-
 const conexao = require('../../config/db').con
 
 var controllerMedicos = {}
@@ -132,18 +130,33 @@ module.exports = function(app){
         
         var id_medico = req.params.id;
         var medico;
-        conexao.query("SELECT id_usuario FROM medicos WHERE id = ?", id_medico, (error, rows) => {
-            if(error) 
-                throw error;
-            var id_usuario = rows[0].id_usuario;
+        
+        const buscarIdUsuario = function(){
+            conexao.query("SELECT id_usuario FROM medicos WHERE id = ?", id_medico, (error, rows) => {
+                if(error){
+                    throw error;
+                }
+                if(rows.length > 0){
+                    var id_usuario = rows[0].id_usuario;
+                    buscarUsuarioMedico(id_usuario);
+                }else{
+                    res.send("Médico não encontrado");
+                }   
+                   
+            })
+        }
+
+        const buscarUsuarioMedico = function(id_usuario){
             conexao.query(" SELECT * FROM usuarios as A INNER JOIN medicos as B on A.id = B.id_usuario WHERE A.id = ?", id_usuario, (error, rows) => {
                 if(error){
                     throw error;
                 }
                 medico = rows[0];
                 res.json(medico)                
-            })   
-        })
+            })
+        }
+
+        buscarIdUsuario();
     }
 
     controllerMedicos.buscarMedicoNome = function(req, res) {
@@ -261,12 +274,8 @@ module.exports = function(app){
 
     controllerMedicos.deletarMedico = function(req, res){
         const id_medico = req.params.id
-        conexao.query("SELECT id_usuario FROM medicos WHERE id = ?", id_medico, (error, rows) => {
-            if(error) 
-                throw error;
-            
-            const id_usuario = rows[0].id_usuario
-                
+        
+        const deletarMedico = function(id_medico){
             conexao.query("DELETE FROM medicos WHERE id = ?", id_medico, (error, result) => {
                 if(error){
                     console.error(error);
@@ -274,7 +283,9 @@ module.exports = function(app){
                 }
                 console.log("Linhas deletadas da tabela medico ", `${result.affectedRows}`)           
             })
-    
+        }
+
+        const deletarUsuario = function(id_usuario){
             conexao.query("DELETE FROM usuarios WHERE id = ? and tipo = 'medico'", id_usuario, (error, result) => {
                 if(error){
                     console.error(error);
@@ -283,7 +294,24 @@ module.exports = function(app){
                 console.log("Linhas deletadas da tabela usuário ", `${result.affectedRows}`)
                 res.sendStatus(200);          
             })
-        })
+        }
+        
+        const buscarIdUsuario = function(id_medico){
+            conexao.query("SELECT id_usuario FROM medicos WHERE id = ?", id_medico, (error, rows) => {
+                if(error) 
+                    throw error;
+                if(rows.length > 0){
+                    var id_usuario = rows[0].id_usuario
+                    deletarMedico(id_medico);
+                    deletarUsuario(id_usuario);
+                }else{
+                    res.send("Médico não encontrado no banco de dados");
+                }    
+                
+            })
+        }
+
+        buscarIdUsuario(id_medico);
         
     }
 

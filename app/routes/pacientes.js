@@ -1,10 +1,11 @@
 var controller = require("../controllers/pacientes.js")();
+const authMiddleware = require('../../config/middleware');
 
 module.exports = function(app){
 
     app.post("/pacientes", controller.adicionarPaciente);
 
-    app.get("/pacientes", controller.buscarPaciente);
+    app.get("/pacientes", authMiddleware, controller.buscarPaciente);
     app.get("/pacientes/:id", controller.buscarPacienteIdUsuario);
     app.get("/pacientes/nome/:nome", controller.buscarPacienteNome);
     

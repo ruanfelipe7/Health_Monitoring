@@ -10,7 +10,7 @@ module.exports = function(app){
 
     var controllerPacientes = {}
 
-    controllerPacientes.adicionarPaciente = function(req, res, next) {
+    controllerPacientes.adicionarPaciente = function(req, res) {
         const validarDados = function(){
             var erros = [];
 
