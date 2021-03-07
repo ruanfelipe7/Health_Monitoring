@@ -5,14 +5,28 @@ const http = require('http');
 const server = http.createServer(app);
 const socketIo = require("socket.io");
 const io = socketIo(server);
-
 //Conexão com o Banco de Dados
 const con = require('./config/db').con;
 const connect = require('./config/db').connect;
 connect(con);
 
+var reqApiEmit = require('./app/controllers/dados').getApiAndEmit;
 
-module.exports = io;
+let interval;
+
+io.on("connection", (socket) => {
+	console.log("New client connected");
+	if (interval) {
+		clearInterval(interval);
+	}
+	interval = setInterval(() => reqApiEmit(socket), 1000);
+	socket.on("disconnect", () => {
+		console.log("Client disconnected");
+		clearInterval(interval);
+	});
+});
+
+
 
 // inicialização do servidor
 server.listen(app.get('port'), () => {

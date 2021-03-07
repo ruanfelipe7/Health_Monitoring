@@ -2,6 +2,10 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var cors = require('cors');
 
+const http = require('http');
+
+
+
 var pacientesRouter = require("../app/routes/pacientes")
 var medicosRouter = require("../app/routes/medicos")
 var dadosRouter = require("../app/routes/dados")
@@ -17,12 +21,19 @@ module.exports = function() {
 	app.set('view engine', 'ejs');
 	app.set('views', './app/views');
 
+	const server = http.createServer(app);
+	const socketIo = require("socket.io");
+	const io = socketIo(server);
+
 	// middleware - BodyParser
 	app.use(bodyParser.urlencoded({extended: false}));
 	app.use(bodyParser.json())
 
 	//Public
 	app.use(express.static('./public'));
+
+	//Sockets
+	
 
 	//Rotas
 	pacientesRouter(app);

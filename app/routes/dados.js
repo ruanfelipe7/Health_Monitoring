@@ -1,4 +1,4 @@
-var controller = require("../controllers/dados")();
+var controller = require("../controllers/dados").controllerFunction();
 
 module.exports = function(app){
 
