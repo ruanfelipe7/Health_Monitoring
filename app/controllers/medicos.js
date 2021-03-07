@@ -1,6 +1,8 @@
 var Usuario = require('../models/usuario')
 var Medico = require('../models/medico')
 const bcrypt = require('bcryptjs')
+const jwt = require('../../config/jwt')
+
 
 const conexao = require('../../config/db').con
 
@@ -75,6 +77,7 @@ module.exports = function(app){
             let tipo = "medico";
 
             bcrypt.hash(req.body.senha, 10).then((senha) => {  //crtiptografando a senha
+                
                 var novoUsuario = new Usuario(nome, cpf, email, senha, telefone, tipo)
                 conexao.query("INSERT INTO usuarios SET ?", novoUsuario, (error, resposta) => {
                     if(error){
@@ -86,6 +89,8 @@ module.exports = function(app){
                     novoUsuario.id = `${resposta.insertId}`;
                     let especialidade = req.body.especialidade;
                     
+                    const token = jwt.sign({usuario: novoUsuario.id});
+
                     var novoMedico = new Medico(novoUsuario.id, especialidade )
 
                     conexao.query("INSERT INTO medicos SET ?", novoMedico, (error, resposta) => {
@@ -95,7 +100,7 @@ module.exports = function(app){
                         } 
                         console.log("Novo medico adicionado");
                         novoMedico.id = `${resposta.insertId}`;
-                        res.json({usuario:novoUsuario,medico:novoMedico})       
+                        res.json({usuario : novoUsuario, medico : novoMedico, token : token})       
                     })    
                 })
             }).catch((error) => {

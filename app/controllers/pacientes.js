@@ -3,6 +3,7 @@ var Paciente = require('../models/paciente')
 const bcrypt = require('bcryptjs')
 const conexao = require('../../config/db').con
 const { transformAuthInfo } = require('passport')
+const jwt = require('../../config/jwt')
 
 
 module.exports = function(app){
@@ -37,8 +38,8 @@ module.exports = function(app){
                 return true;
             }
         }
-
         const verificarCPF = function(){
+
             conexao.query(" SELECT id FROM usuarios WHERE cpf = ?", req.body.cpf, (error, rows) => {
                 if(error){
                     throw error;
@@ -87,15 +88,19 @@ module.exports = function(app){
                     }
                     novoUsuario.id = `${resposta.insertId}`
                     var novoPaciente = new Paciente(novoUsuario.id)
-            
+                    
+                    const token = jwt.sign({usuario: novoUsuario.id});
+                            
                     conexao.query("INSERT INTO pacientes SET ?", novoPaciente, (error, resposta) => {
+                        
                         if(error){
                             console.error(error);
                             res.send("Falha ao inserir o paciente no banco de dados");
                         }else{
                             console.log("Novo paciente adicionado");
                             novoPaciente.id = `${resposta.insertId}`
-                            res.json({usuario: novoUsuario, paciente: novoPaciente})
+                
+                            res.json({usuario: novoUsuario, paciente: novoPaciente, token: token})
                         }
                     })
                 })
@@ -130,17 +135,27 @@ module.exports = function(app){
         var id_paciente = req.params.id;
         var paciente;
         conexao.query("SELECT id_usuario FROM pacientes WHERE id = ?", id_paciente, (error, rows) => {
-            if(error) 
+            if(error){
                 throw error;
-            var id_usuario = rows[0].id_usuario;
+            }
+            
+            if(rows.length > 0){
+                var id_usuario = rows[0].id_usuario;
+                buscarPaciente(id_usuario);  
+            }else{
+                res.send("Paciente não encontrado");
+            }
+        })
+
+        const buscarPaciente = (id_usuario) => {
             conexao.query(" SELECT * FROM usuarios as A INNER JOIN pacientes as B on A.id = B.id_usuario WHERE A.id = ?", id_usuario, (error, rows) => {
                 if(error){
                     throw error;
                 }
                 paciente = rows[0];
-                res.json(paciente)                
-            })   
-        })
+                res.json(paciente);                
+            })
+        }
     }
 
     controllerPacientes.buscarPacienteNome = function(req, res) {
@@ -243,21 +258,19 @@ module.exports = function(app){
     }
 
     controllerPacientes.deletarPaciente = function(req, res){
+        
         const id_paciente = req.params.id
-        conexao.query("SELECT id_usuario FROM pacientes WHERE id = ?", id_paciente, (error, rows) => {
-            if(error) 
-                throw error;
-            
-            const id_usuario = rows[0].id_usuario
-                
+        
+        const deletarPaciente = function(id_paciente){
             conexao.query("DELETE FROM pacientes WHERE id = ?", id_paciente, (error, result) => {
                 if(error){
                     console.error(error);
-                    return
                 }
                 console.log("Linhas deletadas da tabela paciente ", `${result.affectedRows}`)           
             })
-    
+        }
+
+        const deletarUsuario = function(id_usuario){
             conexao.query("DELETE FROM usuarios WHERE id = ? and tipo = 'paciente'", id_usuario, (error, result) => {
                 if(error){
                     console.error(error);
@@ -266,7 +279,26 @@ module.exports = function(app){
                 console.log("Linhas deletadas da tabela usuário ", `${result.affectedRows}`)
                 res.sendStatus(200)        
             })
-        })
+        }
+        
+        const buscarIdUsuario = function(){
+            conexao.query("SELECT id_usuario FROM pacientes WHERE id = ?", id_paciente, (error, rows) => {
+                if(error){
+                    console.log(error);
+                    res.send("Erro na conexão com o banco de dados")
+                } 
+                    
+                if(rows.length > 0){
+                    const id_usuario = rows[0].id_usuario
+                    deletarPaciente(id_paciente);
+                    deletarUsuario(id_usuario);
+                }else{
+                    res.send("Paciente não encontrado no banco de dados");
+                }   
+            })
+        }
+
+        buscarIdUsuario();
         
     }
 

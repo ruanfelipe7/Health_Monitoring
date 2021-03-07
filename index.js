@@ -12,7 +12,7 @@ const connect = require('./config/db').connect;
 connect(con);
 
 
-//module.exports = io;
+module.exports = io;
 
 // inicialização do servidor
 server.listen(app.get('port'), () => {
