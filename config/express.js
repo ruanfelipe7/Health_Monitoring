@@ -32,9 +32,6 @@ module.exports = function() {
 	//Public
 	app.use(express.static('./public'));
 
-	//Sockets
-	
-
 	//Rotas
 	pacientesRouter(app);
 	medicosRouter(app);

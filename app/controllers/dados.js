@@ -4,6 +4,7 @@ const conexao = require('../../config/db').con
 var valorTemperatura = 0;
 var valorOximetro = 0;
 var valorEcg = 0;
+var valorTemperaturaOld = 0;
 
 const controllerFunction = function(app){
     
@@ -35,8 +36,9 @@ const controllerFunction = function(app){
     }
 
     controllerDados.getTemperatura = function(req, res, next){
-        var dadoTemperatura = req.body.data[0];
-        valorTemperatura = dadoTemperatura.Temperatura.value;
+        //var dadoTemperatura = req.body.data[0];
+        //valorTemperatura = dadoTemperatura.Temperatura.value;
+        valorTemperatura = new Date().getSeconds();
         console.log("AQUI NA TEMP: " + valorTemperatura);
         res.send("OK");
     }
@@ -129,9 +131,8 @@ const controllerFunction = function(app){
 }
 
 const getApiAndEmit = socket => {
-	const response = new Date();
-	const temperature = JSON.parse('{ "temperature":"'+valorTemperatura+'"}')
-	socket.emit("Temperature", temperature);
+	    const temperature = JSON.parse('{ "temperature":"'+valorTemperatura+'"}')
+	    socket.emit("Temperature", temperature);   
 };
 
 module.exports = {
