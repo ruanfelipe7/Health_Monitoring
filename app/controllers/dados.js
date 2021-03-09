@@ -36,9 +36,9 @@ const controllerFunction = function(app){
     }
 
     controllerDados.getTemperatura = function(req, res, next){
-        //var dadoTemperatura = req.body.data[0];
-        //valorTemperatura = dadoTemperatura.Temperatura.value;
-        valorTemperatura = new Date().getSeconds();
+        var dadoTemperatura = req.body.data[0];
+        valorTemperatura = dadoTemperatura.Temperatura.value;
+        //valorTemperatura = new Date().getSeconds();
         console.log("AQUI NA TEMP: " + valorTemperatura);
         res.send("OK");
     }

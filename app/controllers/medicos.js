@@ -260,8 +260,13 @@ module.exports = function(app){
             conexao.query("SELECT id_usuario FROM medicos WHERE id = ?", id_medico, (error, rows) => {
                 if(error) 
                     throw error;
-                 var id_usuario = rows[0].id_usuario    
-                 validarEmail(id_usuario);
+                if(rows.length > 0){
+                    var id_usuario = rows[0].id_usuario;    
+                    validarEmail(id_usuario);
+                }else{
+                    res.send("Médico não encontrado");
+                }
+                 
             })
         }
 

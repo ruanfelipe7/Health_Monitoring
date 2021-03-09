@@ -3,9 +3,6 @@ var bodyParser = require('body-parser');
 var cors = require('cors');
 
 const http = require('http');
-
-
-
 var pacientesRouter = require("../app/routes/pacientes")
 var medicosRouter = require("../app/routes/medicos")
 var dadosRouter = require("../app/routes/dados")
@@ -16,6 +13,7 @@ module.exports = function() {
 	app.use(bodyParser.json());
 	 
 	// configurações
+	app.options('*', cors());
 	app.use(cors());
 	app.set('port', 8082);
 	app.set('view engine', 'ejs');
