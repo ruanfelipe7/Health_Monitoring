@@ -6,7 +6,7 @@ const authMiddleware = (req, res, next) => {
     
     try{
         var payload = jwt.verify(token);
-        var id_usuario = payload.usuario;
+        var id_usuario = payload.id;
         conexao.query("SELECT * FROM usuarios WHERE id = ?", id_usuario, (error, rows) => {
             if(error){
                 res.send(error);

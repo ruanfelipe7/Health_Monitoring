@@ -130,12 +130,22 @@ const controllerFunction = function(app){
 
 }
 
-const getApiAndEmit = socket => {
-	    const temperature = JSON.parse('{ "temperature":"'+valorTemperatura+'"}')
+const getApiAndEmitTemperature = socket => {
+	    const temperature = JSON.parse('{ "temperature":"'+valorTemperatura+'", "horario": "'+new Date()+'"}')
 	    socket.emit("Temperature", temperature);   
+};
+const getApiAndEmitOximeter = socket => {
+    const oximeter = JSON.parse('{ "oximeter":"'+valorOximetro+'" , "horario": "'+new Date()+'"}')
+    socket.emit("Oximeter", oximeter);   
+};
+const getApiAndEmitEcg = socket => {
+    const ecg = JSON.parse('{ "Ecg":"'+valorEcg+'", "horario": "'+new Date()+'"}')
+    socket.emit("Ecg", ecg);   
 };
 
 module.exports = {
     controllerFunction,
-    getApiAndEmit
+    getApiAndEmitTemperature,
+    getApiAndEmitOximeter,
+    getApiAndEmitEcg
 }

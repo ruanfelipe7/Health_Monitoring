@@ -10,7 +10,10 @@ const con = require('./config/db').con;
 const connect = require('./config/db').connect;
 connect(con);
 
-var reqApiEmit = require('./app/controllers/dados').getApiAndEmit;
+var apiEmitTemperature = require('./app/controllers/dados').getApiAndEmitTemperature;
+var apiEmitOximeter = require('./app/controllers/dados').getApiAndEmitOximeter;
+var apiEmitEcg = require('./app/controllers/dados').getApiAndEmitEcg;
+
 
 let interval;
 
@@ -19,7 +22,11 @@ io.on("connection", (socket) => {
 	if (interval) {
 		clearInterval(interval);
 	}
-	interval = setInterval(() => reqApiEmit(socket), 5000);
+	interval = setInterval(() => {
+		apiEmitTemperature(socket);
+		apiEmitOximeter(socket);
+		apiEmitEcg(socket);
+		}, 2000);
 	socket.on("disconnect", () => {
 		console.log("Client disconnected");
 		clearInterval(interval);
