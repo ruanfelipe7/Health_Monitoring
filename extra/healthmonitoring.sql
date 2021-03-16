@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Tempo de geração: 04/03/2021 às 01:35
+-- Tempo de geração: 16/03/2021 às 20:39
 -- Versão do servidor: 10.4.17-MariaDB
 -- Versão do PHP: 7.4.15
 
@@ -43,7 +43,10 @@ CREATE TABLE `dados` (
 INSERT INTO `dados` (`ID`, `id_paciente`, `bpm`, `oximetro`, `temperatura`, `data`) VALUES
 (4, 16, 49, 15, 32, '2021-03-03 18:32:49'),
 (5, 16, 17, 15, 50, '2021-03-03 18:50:17'),
-(6, 16, 5, 18, 46, '2021-03-03 21:46:05');
+(6, 16, 5, 18, 46, '2021-03-03 21:46:05'),
+(7, 16, 93, 99, 38, '2021-03-05 16:41:45'),
+(8, 16, 175, 96, 40, '2021-03-05 16:41:55'),
+(9, 16, 117, 95, 39, '2021-03-05 18:29:29');
 
 --
 -- Gatilhos `dados`
@@ -81,8 +84,8 @@ CREATE TABLE `medicos` (
 --
 
 INSERT INTO `medicos` (`id`, `id_usuario`, `especialidade`) VALUES
-(5, 22, 'Dentes'),
-(6, 34, 'Ossos');
+(9, 78, 'Ossos'),
+(10, 79, 'Ossos');
 
 --
 -- Gatilhos `medicos`
@@ -111,19 +114,19 @@ DELIMITER ;
 
 CREATE TABLE `pacientes` (
   `id` int(11) NOT NULL,
-  `id_usuario` int(11) NOT NULL
+  `id_usuario` int(11) NOT NULL,
+  `historico_doencas` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Despejando dados para a tabela `pacientes`
 --
 
-INSERT INTO `pacientes` (`id`, `id_usuario`) VALUES
-(16, 19),
-(18, 23),
-(26, 31),
-(27, 32),
-(29, 35);
+INSERT INTO `pacientes` (`id`, `id_usuario`, `historico_doencas`) VALUES
+(16, 19, 'nada'),
+(53, 60, NULL),
+(70, 81, NULL),
+(71, 82, 'Hipertensão');
 
 --
 -- Gatilhos `pacientes`
@@ -240,7 +243,105 @@ INSERT INTO `system_log` (`operacao`, `usuario`, `data`, `tabela`) VALUES
 ('insert', 'root@localhost', '2021-03-03 23:27:13', 'pacientes'),
 ('delete', 'root@localhost', '2021-03-03 23:28:23', 'pacientes'),
 ('insert', 'root@localhost', '2021-03-03 23:34:54', 'medicos'),
-('insert', 'root@localhost', '2021-03-04 00:25:20', 'pacientes');
+('insert', 'root@localhost', '2021-03-04 00:25:20', 'pacientes'),
+('insert', 'root@localhost', '2021-03-05 16:41:45', 'dados'),
+('insert', 'root@localhost', '2021-03-05 16:41:55', 'dados'),
+('insert', 'root@localhost', '2021-03-05 17:26:28', 'pacientes'),
+('insert', 'root@localhost', '2021-03-05 18:29:29', 'dados'),
+('insert', 'root@localhost', '2021-03-06 18:13:49', 'pacientes'),
+('delete', 'root@localhost', '2021-03-06 18:14:48', 'pacientes'),
+('insert', 'root@localhost', '2021-03-06 18:17:38', 'pacientes'),
+('delete', 'root@localhost', '2021-03-06 18:18:23', 'pacientes'),
+('insert', 'root@localhost', '2021-03-06 18:20:45', 'pacientes'),
+('delete', 'root@localhost', '2021-03-06 18:21:25', 'pacientes'),
+('insert', 'root@localhost', '2021-03-06 18:48:52', 'pacientes'),
+('delete', 'root@localhost', '2021-03-06 18:49:26', 'pacientes'),
+('insert', 'root@localhost', '2021-03-06 18:55:06', 'pacientes'),
+('insert', 'root@localhost', '2021-03-06 18:58:15', 'pacientes'),
+('insert', 'root@localhost', '2021-03-06 19:01:05', 'pacientes'),
+('delete', 'root@localhost', '2021-03-06 19:02:46', 'pacientes'),
+('delete', 'root@localhost', '2021-03-06 19:02:48', 'pacientes'),
+('delete', 'root@localhost', '2021-03-06 19:02:53', 'pacientes'),
+('insert', 'root@localhost', '2021-03-06 19:06:42', 'pacientes'),
+('insert', 'root@localhost', '2021-03-06 19:08:03', 'pacientes'),
+('insert', 'root@localhost', '2021-03-06 19:15:21', 'pacientes'),
+('insert', 'root@localhost', '2021-03-06 19:19:07', 'pacientes'),
+('insert', 'root@localhost', '2021-03-06 19:20:11', 'pacientes'),
+('insert', 'root@localhost', '2021-03-06 19:22:23', 'pacientes'),
+('insert', 'root@localhost', '2021-03-06 19:25:16', 'pacientes'),
+('insert', 'root@localhost', '2021-03-06 19:25:54', 'pacientes'),
+('insert', 'root@localhost', '2021-03-06 19:28:32', 'pacientes'),
+('insert', 'root@localhost', '2021-03-06 19:29:33', 'pacientes'),
+('insert', 'root@localhost', '2021-03-06 19:33:05', 'pacientes'),
+('insert', 'root@localhost', '2021-03-06 19:42:24', 'pacientes'),
+('insert', 'root@localhost', '2021-03-06 19:45:42', 'pacientes'),
+('insert', 'root@localhost', '2021-03-06 20:05:39', 'pacientes'),
+('insert', 'root@localhost', '2021-03-06 20:15:06', 'pacientes'),
+('delete', 'root@localhost', '2021-03-06 20:17:41', 'pacientes'),
+('delete', 'root@localhost', '2021-03-06 20:17:41', 'pacientes'),
+('delete', 'root@localhost', '2021-03-06 20:17:41', 'pacientes'),
+('delete', 'root@localhost', '2021-03-06 20:17:41', 'pacientes'),
+('delete', 'root@localhost', '2021-03-06 20:17:41', 'pacientes'),
+('delete', 'root@localhost', '2021-03-06 20:17:41', 'pacientes'),
+('delete', 'root@localhost', '2021-03-06 20:17:41', 'pacientes'),
+('delete', 'root@localhost', '2021-03-06 20:17:41', 'pacientes'),
+('delete', 'root@localhost', '2021-03-06 20:17:41', 'pacientes'),
+('delete', 'root@localhost', '2021-03-06 20:17:41', 'pacientes'),
+('delete', 'root@localhost', '2021-03-06 20:17:41', 'pacientes'),
+('delete', 'root@localhost', '2021-03-06 20:17:41', 'pacientes'),
+('delete', 'root@localhost', '2021-03-06 20:17:41', 'pacientes'),
+('delete', 'root@localhost', '2021-03-06 20:17:41', 'pacientes'),
+('delete', 'root@localhost', '2021-03-06 20:17:41', 'pacientes'),
+('delete', 'root@localhost', '2021-03-06 20:17:41', 'pacientes'),
+('delete', 'root@localhost', '2021-03-06 20:17:41', 'pacientes'),
+('delete', 'root@localhost', '2021-03-06 20:17:41', 'pacientes'),
+('delete', 'root@localhost', '2021-03-06 20:17:41', 'pacientes'),
+('delete', 'root@localhost', '2021-03-06 20:17:41', 'pacientes'),
+('delete', 'root@localhost', '2021-03-06 20:19:24', 'medicos'),
+('delete', 'root@localhost', '2021-03-06 20:19:26', 'medicos'),
+('insert', 'root@localhost', '2021-03-06 20:38:35', 'pacientes'),
+('insert', 'root@localhost', '2021-03-06 20:44:44', 'medicos'),
+('insert', 'root@localhost', '2021-03-06 20:45:17', 'medicos'),
+('update', 'root@localhost', '2021-03-06 20:59:00', 'medicos'),
+('insert', 'root@localhost', '2021-03-06 23:37:52', 'pacientes'),
+('delete', 'root@localhost', '2021-03-06 23:40:14', 'pacientes'),
+('insert', 'root@localhost', '2021-03-06 23:40:20', 'pacientes'),
+('delete', 'root@localhost', '2021-03-06 23:42:17', 'pacientes'),
+('insert', 'root@localhost', '2021-03-06 23:42:21', 'pacientes'),
+('delete', 'root@localhost', '2021-03-06 23:43:36', 'pacientes'),
+('insert', 'root@localhost', '2021-03-06 23:43:46', 'pacientes'),
+('delete', 'root@localhost', '2021-03-06 23:44:55', 'pacientes'),
+('insert', 'root@localhost', '2021-03-06 23:44:59', 'pacientes'),
+('delete', 'root@localhost', '2021-03-06 23:49:33', 'pacientes'),
+('insert', 'root@localhost', '2021-03-06 23:49:36', 'pacientes'),
+('delete', 'root@localhost', '2021-03-06 23:51:21', 'pacientes'),
+('insert', 'root@localhost', '2021-03-06 23:51:32', 'pacientes'),
+('delete', 'root@localhost', '2021-03-06 23:53:31', 'pacientes'),
+('insert', 'root@localhost', '2021-03-06 23:53:34', 'pacientes'),
+('delete', 'root@localhost', '2021-03-07 00:12:34', 'pacientes'),
+('insert', 'root@localhost', '2021-03-07 00:12:37', 'pacientes'),
+('delete', 'root@localhost', '2021-03-07 00:13:17', 'pacientes'),
+('insert', 'root@localhost', '2021-03-07 00:13:21', 'pacientes'),
+('delete', 'root@localhost', '2021-03-07 00:35:06', 'pacientes'),
+('insert', 'root@localhost', '2021-03-07 00:35:10', 'pacientes'),
+('delete', 'root@localhost', '2021-03-07 00:36:10', 'pacientes'),
+('insert', 'root@localhost', '2021-03-07 00:36:13', 'pacientes'),
+('delete', 'root@localhost', '2021-03-07 00:36:23', 'pacientes'),
+('insert', 'root@localhost', '2021-03-07 00:37:58', 'pacientes'),
+('delete', 'root@localhost', '2021-03-07 00:39:36', 'pacientes'),
+('insert', 'root@localhost', '2021-03-07 00:39:39', 'pacientes'),
+('delete', 'root@localhost', '2021-03-07 00:41:56', 'pacientes'),
+('insert', 'root@localhost', '2021-03-07 00:42:00', 'pacientes'),
+('delete', 'root@localhost', '2021-03-07 00:46:33', 'medicos'),
+('insert', 'root@localhost', '2021-03-07 00:46:38', 'medicos'),
+('delete', 'root@localhost', '2021-03-07 00:57:24', 'pacientes'),
+('delete', 'root@localhost', '2021-03-07 17:07:43', 'medicos'),
+('insert', 'root@localhost', '2021-03-07 17:11:08', 'medicos'),
+('insert', 'root@localhost', '2021-03-09 16:41:12', 'pacientes'),
+('delete', 'root@localhost', '2021-03-11 14:41:16', 'pacientes'),
+('insert', 'root@localhost', '2021-03-11 14:41:20', 'pacientes'),
+('insert', 'root@localhost', '2021-03-16 18:50:34', 'pacientes'),
+('update', 'root@localhost', '2021-03-16 19:20:34', 'pacientes');
 
 -- --------------------------------------------------------
 
@@ -263,13 +364,12 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `nome`, `cpf`, `email`, `senha`, `telefone`, `tipo`) VALUES
-(19, 'Jorge 5', '190', 'jorge@gmail.com', '123', '9090', 'paciente'),
-(22, 'Tiradentes', '2133', 'tiradentes@gmail.com', '123', '1423', 'medico'),
-(23, 'Ruan Felipe', '21312', 'felipealmeida@.com', '12345', '124124', 'paciente'),
-(31, 'Felipe 4', '213', 'felipe4@gmail.com', '$2a$15$ORV79mr3basadTw1arV/GeriX4XfoBFYcpe8hy/YrgMmQT5Bz8Caa', '124124', 'paciente'),
-(32, 'Felipe 5', '123123', 'felipe5@gmail.com', '$2a$10$OPczHwzTCU/QRq..w2vNIuJPDFygXhkxQeX1ugjoi9RB21DsRgCVq', '2133', 'paciente'),
-(34, 'Dom Pedro I', '1312', 'dompedro1@gmail.com', '$2a$10$04iw2NOsxyEq0np2ABpyceJC9elAHFvFxcvXuVVRzuNEGeO/KOBMq', '32131', 'medico'),
-(35, 'Felipe 7', '21312', 'felipe7@gmail.com', '$2a$10$uz5/IV81fjO/nEXuCyLLlO7OOT3MK4y5dId3RlH04uMSKQk6uKpzK', '2133', 'paciente');
+(19, 'Jorge 7', '190', 'jorge@gmail.com', '123', '9090', 'paciente'),
+(60, 'Felipe 11', '1231412', 'felipe1432@gmail.com', '$2a$10$xJPkLMg2eyoPuyBUlrIxz.2NXJ9M3cV90sIJAXLRmDX7fer81ogti', '41235132', 'paciente'),
+(78, 'Dom Pedro II', '13121', 'dompedro2@gmail.com', '$2a$10$LELbaSZQsKhenkTNj4r3x.cOCYbqbXeKtzQ9kV3WHqTauZ/9R2Kt6', '32131', 'medico'),
+(79, 'Natan', '3213', 'natan@gmail.com', '$2a$10$oCCJw.cCMlkzzMS1./HGbOpTA/bVLoMhnW2RkImyVqBLedjoK2Iom', '32131', 'medico'),
+(81, 'Felipe 12', '41321', 'felipe12@gmail.com', '$2a$10$M0u0eEjm/hfYfWJWuWy6Y.IKtb8UTM5chHMzIrLbGrPrapPwxNT3u', '41235132', 'paciente'),
+(82, 'Felipe 13', '123456789', 'felipe13@gmail.com', '$2a$10$1ufpvZ7kuBs3SxwMusd6b.voA/ga.dBX5pOdrHbWlxvcT2NEa1BH.', '41235132', 'paciente');
 
 --
 -- Índices para tabelas despejadas
@@ -317,25 +417,25 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de tabela `dados`
 --
 ALTER TABLE `dados`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de tabela `medicos`
 --
 ALTER TABLE `medicos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de tabela `pacientes`
 --
 ALTER TABLE `pacientes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
 
 --
 -- AUTO_INCREMENT de tabela `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
 
 --
 -- Restrições para tabelas despejadas

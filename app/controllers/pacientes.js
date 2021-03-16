@@ -87,7 +87,9 @@ module.exports = function(app){
                         console.log("Novo usuario adicionado");
                     }
                     novoUsuario.id = `${resposta.insertId}`
-                    var novoPaciente = new Paciente(novoUsuario.id)
+                    let historico_doencas = req.body.historico_doencas;
+
+                    var novoPaciente = new Paciente(novoUsuario.id, historico_doencas);
                     
                     const token = jwt.sign({usuario: novoUsuario.id});
                             
@@ -231,17 +233,29 @@ module.exports = function(app){
                 senha: req.body.senha,
                 telefone: req.body.telefone, 
             }
+            var paciente = {
+                historico_doencas: req.body.historico_doencas
+            }
             conexao.query("UPDATE usuarios SET nome = ?, cpf = ?, email = ?, senha = ?, telefone = ? WHERE id = ?", [usuario.nome, usuario.cpf, usuario.email, usuario.senha, usuario.telefone, id_usuario], (error, result) => {
                 if(error){
                     console.log(error);
                     res.send("Erro ao atualizar o paciente")
                 }else{
-                    res.json(usuario)
+                    conexao.query("UPDATE pacientes SET historico_doencas = ? WHERE id = ?", [paciente.historico_doencas, id_paciente], (error, result) => {
+                        if(error){
+                            console.log(error);
+                            res.send("Erro ao atualizar o historico do paciente")
+                        }else{
+                            res.json({usuario: usuario, paciente: paciente});
+                        }
+                    }) 
+                    
                 }  
             })
         }
         
         const id_paciente = req.params.id
+
         const buscarIdUsuario = function(){
             conexao.query("SELECT id_usuario FROM pacientes WHERE id = ?", id_paciente, (error, rows) => {
                 if(error) 
