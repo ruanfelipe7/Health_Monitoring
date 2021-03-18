@@ -1,5 +1,6 @@
 var Usuario = require('../models/usuario')
 var Paciente = require('../models/paciente')
+var RelacionamentoMedicoPaciente = require('../models/rel_medico_paciente');
 const bcrypt = require('bcryptjs')
 const conexao = require('../../config/db').con
 const { transformAuthInfo } = require('passport')
@@ -319,6 +320,36 @@ module.exports = function(app){
 
         buscarIdUsuario();
         
+    }
+
+    controllerPacientes.adicionarMedicoParaoPaciente = function(req, res) {
+        
+        const buscarIdPaciente = function(id_usuario, id_medico){
+            conexao.query("SELECT id FROM pacientes WHERE id_usuario = ?", id_usuario, (error, rows) => {
+                if(error){
+                    throw error
+                }
+                if(rows.length > 0){
+                    let id_paciente = rows[0].id;
+                    inserirRelacionamentoMedicoPaciente(id_paciente, id_medico);
+                }
+            })
+        }
+        
+        const inserirRelacionamentoMedicoPaciente = function(id_paciente, id_medico){
+            var novoRelacionamentoPacMed = new RelacionamentoMedicoPaciente(id_paciente, id_medico);
+            conexao.query("INSERT INTO rel_medico_paciente SET ?", novoRelacionamentoPacMed, (error, resposta) => {
+                if(error){
+                    console.log(error);
+                    res.send(error);
+                }
+                res.json({relcionamentoMedPac: novoRelacionamentoPacMed});
+            })
+        }
+        let id_usuario = req.auth.id;
+        let id_medico = parseInt(req.body.id_medico)    ;
+        buscarIdPaciente(id_usuario, id_medico);
+
     }
 
     return controllerPacientes

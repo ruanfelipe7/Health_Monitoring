@@ -14,4 +14,6 @@ module.exports = function(app){
     app.get("/dados/temperatura/:id_paciente", controller.buscarTempIdPaciente);
     app.get("/dados/oximetro/:id_paciente", controller.buscarOximetroIdPaciente);
     app.get("/dados/bpm/:id_paciente", controller.buscarBPMIdPaciente);
+
+    app.get("/dados/busca/data", controller.buscarDadosData);
 }

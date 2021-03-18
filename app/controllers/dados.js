@@ -122,6 +122,32 @@ const controllerFunction = function(app){
             }                
         })
     }
+
+    controllerDados.buscarDadosData = function(req, res) {
+        let id_paciente = req.query.id_paciente;    
+        var dataInicio = new Date(req.query.dataInicial);
+        var dataFinal = new Date(req.query.dataFinal);
+        
+        dataFinal.setDate(dataFinal.getDate() + 1);
+        dataFinal.setHours(20);
+        dataFinal.setMinutes(59);
+        dataFinal.setSeconds(59);
+        
+        console.log(dataFinal);
+        conexao.query("SELECT * FROM dados WHERE id_paciente = ? AND data BETWEEN ? AND ? ", [id_paciente, dataInicio, dataFinal], (error, rows) => {
+            var dadosPesquisados = [];
+            if(error){
+                throw error;
+            }
+            if(rows.length > 0){
+                dadosPesquisados = rows;
+                res.json(dadosPesquisados);
+            }else{
+                res.send("Nenhum dado encontrado entre as datas informadas");
+            }
+        })
+
+    }
     
 
     return controllerDados;
