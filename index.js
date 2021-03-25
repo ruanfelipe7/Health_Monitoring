@@ -10,12 +10,15 @@ const con = require('./config/db').con;
 const connect = require('./config/db').connect;
 connect(con);
 
+
 var apiEmitTemperature = require('./app/controllers/dados').getApiAndEmitTemperature;
 var apiEmitOximeter = require('./app/controllers/dados').getApiAndEmitOximeter;
 var apiEmitEcg = require('./app/controllers/dados').getApiAndEmitEcg;
+var saveData = require('./app/controllers/dados').saveDataPacient;
 
 
 let interval;
+let intervalSave = 0;
 
 io.on("connection", (socket) => {
 	console.log("New client connected");
@@ -33,6 +36,16 @@ io.on("connection", (socket) => {
 	});
 });
 
+const salvarDadosBanco = async () => {
+	if(intervalSave){
+		clearInterval(intervalSave);
+	}
+	intervalSave = setInterval(() => {
+		saveData();
+	}, 2000);
+}
+
+salvarDadosBanco();
 
 
 // inicialização do servidor

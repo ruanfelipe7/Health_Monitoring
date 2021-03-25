@@ -10,27 +10,10 @@ const controllerFunction = function(app){
     
     var controllerDados = {};
 
-    
-
-    controllerDados.adicionarDados = function(req, res, next) {
+    controllerDados.adicionarDados = function(req, res) {
         
-        var data = new Date();
-        let id_paciente = 16;
-        let bpm = valorEcg;
-        let oximetro = valorOximetro;
-        let temperatura = valorTemperatura;
-
-        var novoDado = new Dados(id_paciente, bpm, oximetro, temperatura, data)
-        
-        conexao.query("INSERT INTO dados SET ?", novoDado, (error, resposta) => {
-            if(error){ 
-                throw error
-            } else {
-                novoDado.id = `${resposta.insertId}`
-                res.json(novoDado)
-                console.log("Novo dado adicionado");
-            }    
-        })
+        var dadoAdicionado = saveDataPacient();
+        res.json(dadoAdicionado);
         
     }
 
@@ -167,9 +150,30 @@ const getApiAndEmitEcg = socket => {
     socket.emit("Ecg", ecg);   
 };
 
+const saveDataPacient = function(){
+    var data = new Date();
+        let id_paciente = 16;
+        let bpm = valorEcg;
+        let oximetro = valorOximetro;
+        let temperatura = valorTemperatura;
+
+        var novoDado = new Dados(id_paciente, bpm, oximetro, temperatura, data)
+        
+        conexao.query("INSERT INTO dados SET ?", novoDado, (error, resposta) => {
+            if(error){ 
+                throw error
+            } else {
+                novoDado.id = `${resposta.insertId}`
+                console.log("Novo dado adicionado");
+                return novoDado;
+            }    
+        })
+}
+
 module.exports = {
     controllerFunction,
     getApiAndEmitTemperature,
     getApiAndEmitOximeter,
-    getApiAndEmitEcg
+    getApiAndEmitEcg,
+    saveDataPacient,
 }
