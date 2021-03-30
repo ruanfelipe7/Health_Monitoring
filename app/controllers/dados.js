@@ -163,10 +163,33 @@ const saveDataPacient = function(){
             if(error){ 
                 throw error
             } else {
+                console.log("Novo dado adicionado");
                 novoDado.id = `${resposta.insertId}`
                 return novoDado;
             }    
         })
+}
+
+const deletarTodosDados = function(){
+	conexao.query("DELETE FROM dados", (error, result) => {
+		if(error){
+			console.error(error);
+			return;
+		}
+		console.log("Linhas deletadas da tabela dados ", `${result.affectedRows}`)          
+	})
+}
+
+const cleanDados = function(qtd){
+    conexao.query("SELECT COUNT(*) AS dadosCount FROM dados", (error, result) => {
+        if(error){
+            console.error(error);
+            return;
+        }
+        if(result[0].dadosCount > qtd){
+            deletarTodosDados();
+        }
+    })
 }
 
 module.exports = {
@@ -175,4 +198,5 @@ module.exports = {
     getApiAndEmitOximeter,
     getApiAndEmitEcg,
     saveDataPacient,
+    cleanDados
 }

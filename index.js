@@ -15,7 +15,7 @@ var apiEmitTemperature = require('./app/controllers/dados').getApiAndEmitTempera
 var apiEmitOximeter = require('./app/controllers/dados').getApiAndEmitOximeter;
 var apiEmitEcg = require('./app/controllers/dados').getApiAndEmitEcg;
 var saveData = require('./app/controllers/dados').saveDataPacient;
-
+var cleanData = require('./app/controllers/dados').cleanDados;
 
 let interval;
 let intervalSave = 0;
@@ -36,16 +36,19 @@ io.on("connection", (socket) => {
 	});
 });
 
-const salvarDadosBanco = async () => {
+
+
+const salvarDeletarDadosBanco = async () => {
 	if(intervalSave){
 		clearInterval(intervalSave);
 	}
 	intervalSave = setInterval(() => {
+		cleanData(100);
 		saveData();
 	}, 2000);
 }
 
-salvarDadosBanco();
+salvarDeletarDadosBanco();
 
 
 // inicialização do servidor

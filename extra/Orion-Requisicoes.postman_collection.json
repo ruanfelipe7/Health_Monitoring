@@ -1,0 +1,708 @@
+{
+	"info": {
+		"_postman_id": "ed24a51c-1ce9-4769-80d0-6e2abc29b65f",
+		"name": "Orion-Requisicoes",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Broker-config",
+			"item": [
+				{
+					"name": "Broker",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "fiware-service",
+								"value": "iotdata",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"services\": [\n   {\n     \"apikey\":      \"4jggokgpepnvsb2uv4s40d59oc\",\n     \"cbroker\":     \"http://orion:1026\",\n     \"entity_type\": \"Thing\",\n     \"resource\":    \"\"\n   }\n ]\n}"
+						},
+						"url": {
+							"raw": "{{host}}:4041/iot/services",
+							"host": [
+								"{{host}}"
+							],
+							"port": "4041",
+							"path": [
+								"iot",
+								"services"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetBroker",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "fiware-service",
+								"value": "iotdata",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}:4041/iot/services/",
+							"host": [
+								"{{host}}"
+							],
+							"port": "4041",
+							"path": [
+								"iot",
+								"services",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Subscricoes",
+			"item": [
+				{
+					"name": "SubscribeTemperature",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "fiware-service",
+								"value": "iotdata",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"description\": \"Notify me of temperature changes\",\n  \"subject\": {\n    \"entities\": [{\"idPattern\": \"urn:ngsi-ld:Temperatura:756\"}],\n    \"condition\": {\n      \"attrs\": []\n    }\n  },\n  \"notification\": {\n    \"http\": {\n      \"url\": \"{{ngrok}}/dados/temperatura\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "{{host}}:1026/v2/subscriptions",
+							"host": [
+								"{{host}}"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"subscriptions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SubscribeOximetro",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "fiware-service",
+								"type": "text",
+								"value": "iotdata"
+							},
+							{
+								"key": "fiware-servicepath",
+								"type": "text",
+								"value": "/"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"description\": \"Notify me of oximetro changes\",\n  \"subject\": {\n    \"entities\": [{\"idPattern\": \"urn:ngsi-ld:Oximetro:756\"}],\n    \"condition\": {\n      \"attrs\": []\n    }\n  },\n  \"notification\": {\n    \"http\": {\n      \"url\": \"{{ngrok}}/dados/oximetro\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "{{host}}:1026/v2/subscriptions",
+							"host": [
+								"{{host}}"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"subscriptions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SubscribeECG",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "fiware-service",
+								"type": "text",
+								"value": "iotdata"
+							},
+							{
+								"key": "fiware-servicepath",
+								"type": "text",
+								"value": "/"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"description\": \"Notify me of ECG changes\",\n  \"subject\": {\n    \"entities\": [{\"idPattern\": \"urn:ngsi-ld:Ecg:756\"}],\n    \"condition\": {\n      \"attrs\": []\n    }\n  },\n  \"notification\": {\n    \"http\": {\n      \"url\": \"{{ngrok}}/dados/ecg\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "{{host}}:1026/v2/subscriptions",
+							"host": [
+								"{{host}}"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"subscriptions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetSubscription",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							},
+							{
+								"key": "fiware-service",
+								"value": "iotdata",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}:1026/v2/subscriptions",
+							"host": [
+								"{{host}}"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"subscriptions"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "post-ecg",
+			"item": [
+				{
+					"name": "EntidadeEcg",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "fiware-service",
+								"type": "text",
+								"value": "iotdata"
+							},
+							{
+								"key": "fiware-servicepath",
+								"type": "text",
+								"value": "/"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"devices\": [\n   {\n     \"device_id\":   \"ecg756\",\n     \"entity_name\": \"urn:ngsi-ld:Ecg:756\",\n     \"entity_type\": \"Ecg_entidade\",\n     \"protocol\":    \"PDI-IoTA-UltraLight\",\n     \"transport\":   \"MQTT\",\n     \"timezone\":    \"America/Fortaleza\",\n     \"attributes\": [\n       { \"object_id\": \"Ecg\", \"name\": \"Ecg\", \"type\": \"Float\"}\n     ]\n   }\n ]\n}"
+						},
+						"url": {
+							"raw": "{{host}}:4041/iot/devices",
+							"host": [
+								"{{host}}"
+							],
+							"port": "4041",
+							"path": [
+								"iot",
+								"devices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "MEU-PUT",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/plain",
+								"type": "text"
+							},
+							{
+								"key": "fiware-service",
+								"value": "iotdata",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "1900"
+						},
+						"url": {
+							"raw": "{{host}}:1026/v2/entities/urn:ngsi-ld:Ecg:756/attrs/Ecg/value",
+							"host": [
+								"{{host}}"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"entities",
+								"urn:ngsi-ld:Ecg:756",
+								"attrs",
+								"Ecg",
+								"value"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "get-ecg",
+			"item": [
+				{
+					"name": "get-entity-ecg",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "text/plain",
+								"disabled": true
+							},
+							{
+								"key": "fiware-service",
+								"type": "text",
+								"value": "iotdata"
+							},
+							{
+								"key": "fiware-servicepath",
+								"type": "text",
+								"value": "/"
+							}
+						],
+						"url": {
+							"raw": "{{host}}:1026/v2/entities/urn:ngsi-ld:Ecg:756/",
+							"host": [
+								"{{host}}"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"entities",
+								"urn:ngsi-ld:Ecg:756",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "post-temperatura",
+			"item": [
+				{
+					"name": "EntidadeTemperatura",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "fiware-service",
+								"value": "iotdata",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"devices\": [\n   {\n     \"device_id\":   \"temperatura756\",\n     \"entity_name\": \"urn:ngsi-ld:Temperatura:756\",\n     \"entity_type\": \"Temperatura_entidade\",\n     \"protocol\":    \"PDI-IoTA-UltraLight\",\n     \"transport\":   \"MQTT\",\n     \"timezone\":    \"America/Fortaleza\",\n     \"attributes\": [\n       { \"object_id\": \"Temperatura\", \"name\": \"Temperatura\", \"type\": \"Float\" }\n     ]\n   }\n ]\n}"
+						},
+						"url": {
+							"raw": "{{host}}:4041/iot/devices",
+							"host": [
+								"{{host}}"
+							],
+							"port": "4041",
+							"path": [
+								"iot",
+								"devices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "MEU-PUT",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/plain",
+								"type": "text"
+							},
+							{
+								"key": "fiware-service",
+								"value": "iotdata",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "2012"
+						},
+						"url": {
+							"raw": "{{host}}:1026/v2/entities/urn:ngsi-ld:Temperatura:756/attrs/Temperatura/value",
+							"host": [
+								"{{host}}"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"entities",
+								"urn:ngsi-ld:Temperatura:756",
+								"attrs",
+								"Temperatura",
+								"value"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "get-temperatura",
+			"item": [
+				{
+					"name": "get-entity-temperatura",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/plain",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "fiware-service",
+								"value": "iotdata",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}:1026/v2/entities/urn:ngsi-ld:Temperatura:756/",
+							"host": [
+								"{{host}}"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"entities",
+								"urn:ngsi-ld:Temperatura:756",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "post-oximetro",
+			"item": [
+				{
+					"name": "EntidadeOximetro",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "fiware-service",
+								"value": "iotdata",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"devices\": [\n   {\n     \"device_id\":   \"oximetro756\",\n     \"entity_name\": \"urn:ngsi-ld:Oximetro:756\",\n     \"entity_type\": \"Oximetro_entidade\",\n     \"protocol\":    \"PDI-IoTA-UltraLight\",\n     \"transport\":   \"MQTT\",\n     \"timezone\":    \"Europe/Berlin\",\n     \"attributes\": [\n       { \"object_id\": \"Oximetro\", \"name\": \"Oximetro\", \"type\": \"Float\" }\n     ]\n   }\n ]\n}"
+						},
+						"url": {
+							"raw": "{{host}}:4041/iot/devices",
+							"host": [
+								"{{host}}"
+							],
+							"port": "4041",
+							"path": [
+								"iot",
+								"devices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "MEU-PUT",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/plain",
+								"type": "text"
+							},
+							{
+								"key": "fiware-service",
+								"value": "iotdata",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "2012"
+						},
+						"url": {
+							"raw": "{{host}}:1026/v2/entities/urn:ngsi-ld:Oximetro:756/attrs/Oximetro/value",
+							"host": [
+								"{{host}}"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"entities",
+								"urn:ngsi-ld:Oximetro:756",
+								"attrs",
+								"Oximetro",
+								"value"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "get-oximetro",
+			"item": [
+				{
+					"name": "get-entity-oximetro",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "text/plain",
+								"disabled": true
+							},
+							{
+								"key": "fiware-service",
+								"type": "text",
+								"value": "iotdata"
+							},
+							{
+								"key": "fiware-servicepath",
+								"type": "text",
+								"value": "/"
+							}
+						],
+						"url": {
+							"raw": "{{host}}:1026/v2/entities/urn:ngsi-ld:Oximetro:756/",
+							"host": [
+								"{{host}}"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"entities",
+								"urn:ngsi-ld:Oximetro:756",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
