@@ -164,7 +164,6 @@ const saveDataPacient = function(){
                 throw error
             } else {
                 novoDado.id = `${resposta.insertId}`
-                console.log("Novo dado adicionado");
                 return novoDado;
             }    
         })

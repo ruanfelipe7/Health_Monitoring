@@ -24,6 +24,15 @@ module.exports = function(passport){
 
             })
         })
-    }))        
+    }))
+
+    passport.serializeUser((usuario, done)=> {
+
+        done(null, usuario);
+    })
+
+    passport.deserializeUser((usuario, done) => {
+        done(null, usuario);
+    })        
  
 }

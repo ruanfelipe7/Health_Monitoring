@@ -33,6 +33,7 @@ module.exports = function(app){
         res.json(req.auth);
     }
 
+    
 
     return controllerLogin;
 }
