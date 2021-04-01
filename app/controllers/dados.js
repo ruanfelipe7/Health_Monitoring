@@ -3,7 +3,7 @@ const conexao = require('../../config/db').con
 
 var valorTemperatura = 0;
 var valorOximetro = 0;
-var valorEcg = 0;
+var valorEcg = 5;
 var valorTemperaturaOld = 0;
 
 const controllerFunction = function(app){
@@ -33,8 +33,8 @@ const controllerFunction = function(app){
 
     controllerDados.getEcg = function(req, res, next){
         var dadoEcg = req.body.data[0];
-        controllerDados.valorEcg = dadoEcg.Ecg.value;
-        console.log("AQUI NO ECG: " + controllerDados.valorEcg);
+        valorEcg = dadoEcg.Ecg.value;
+        console.log("AQUI NO ECG: " + valorEcg);
         res.send("OK");
     }
 
@@ -146,8 +146,8 @@ const getApiAndEmitOximeter = socket => {
     socket.emit("Oximeter", oximeter);   
 };
 const getApiAndEmitEcg = socket => {
-    const ecg = JSON.parse('{ "Ecg":"'+valorEcg+'", "horario": "'+new Date()+'"}')
-    socket.emit("Ecg", ecg);   
+    const BPM = JSON.parse('{ "BPM":"'+valorEcg+'", "horario": "'+new Date()+'"}')
+    socket.emit("BPM", BPM);   
 };
 
 const saveDataPacient = function(){

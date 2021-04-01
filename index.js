@@ -18,6 +18,8 @@ var saveData = require('./app/controllers/dados').saveDataPacient;
 var cleanData = require('./app/controllers/dados').cleanDados;
 
 let interval;
+let interval2;
+let interval3;
 let intervalSave = 0;
 
 io.on("connection", (socket) => {
@@ -25,14 +27,21 @@ io.on("connection", (socket) => {
 	if (interval) {
 		clearInterval(interval);
 	}
-	interval = setInterval(() => {
-		apiEmitTemperature(socket);
-		apiEmitOximeter(socket);
-		apiEmitEcg(socket);
-		}, 2000);
+	if (interval2) {
+		clearInterval(interval2);
+	}
+	if (interval3) {
+		clearInterval(interval3);
+	}
+	interval = setInterval(() => { apiEmitTemperature(socket); }, 2000);
+	interval2 = setInterval(() => { apiEmitEcg(socket); }, 100);
+	interval3 = setInterval(() => { apiEmitOximeter(socket); }, 2000);
 	socket.on("disconnect", () => {
 		console.log("Client disconnected");
 		clearInterval(interval);
+		clearInterval(interval2);
+		clearInterval(interval3);
+		
 	});
 });
 
