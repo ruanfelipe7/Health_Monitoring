@@ -43,7 +43,7 @@ const salvarDeletarDadosBanco = async () => {
 		clearInterval(intervalSave);
 	}
 	intervalSave = setInterval(() => {
-		cleanData(100);
+		cleanData(200);
 		saveData();
 	}, 2000);
 }

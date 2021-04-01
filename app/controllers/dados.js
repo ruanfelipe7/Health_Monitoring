@@ -163,7 +163,7 @@ const saveDataPacient = function(){
             if(error){ 
                 throw error
             } else {
-                console.log("Novo dado adicionado");
+                //console.log("Novo dado adicionado");
                 novoDado.id = `${resposta.insertId}`
                 return novoDado;
             }    
@@ -176,8 +176,10 @@ const deletarTodosDados = function(){
 			console.error(error);
 			return;
 		}
+        console.log("----------------------------------------");
 		console.log("Linhas deletadas da tabela dados ", `${result.affectedRows}`)          
-	})
+        console.log("----------------------------------------");
+    })
 }
 
 const cleanDados = function(qtd){
