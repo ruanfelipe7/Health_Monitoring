@@ -1,11 +1,16 @@
 var Dados = require('../models/dados')
 const conexao = require('../../config/db').con
+const sendEmail = require('../../config/email').sendEmail;
 
-var valorTemperatura = 0;
-var valorOximetro = 0;
-var valorEcg = 5;
-var valorTemperaturaOld = 0;
-
+var valorTemperatura = 36;
+var valorOximetro = 95;
+var valorEcg = 0;
+var valorBpm = 70;
+var errosTemperatura = 0;
+var errosBPM = 0;
+var errosOximetro = 0;
+// var countMsg = 0;
+// var latenciaTotal = 0;
 const controllerFunction = function(app){
     
     var controllerDados = {};
@@ -20,23 +25,98 @@ const controllerFunction = function(app){
     controllerDados.getTemperatura = function(req, res, next){
         var dadoTemperatura = req.body.data[0];
         valorTemperatura = dadoTemperatura.Temperatura.value;
-        console.log("AQUI NA TEMP: " + valorTemperatura);
+        console.log("TEMPERATURA: "+valorTemperatura);
+        // valorTemperatura = parseInt(dadoTemperatura.Temperatura.value);
+        // countMsg++;
+        // var instanteAtual = new Date();
+
+        // var atual = (instanteAtual.getSeconds()*1000)+ instanteAtual.getMilliseconds();
+        // var latencia = atual - valorTemperatura;
+        // if(latencia < 0) {
+        //     latencia += 60000;
+        // }        
+        // latenciaTotal+=latencia;
+        // console.log("**Temperatura**")
+        // console.log("atual : "+atual);
+        // console.log("recebido: " + valorTemperatura);
+        // console.log("latencia: "+latencia);
+        // console.log("Quantidade msgs : "+countMsg);
+        // if(countMsg > 0) console.log("Latencia Media : "+latenciaTotal/countMsg);
+        // console.log("\n");
         res.send("OK");
     }
 
     controllerDados.getOximetro = function(req, res, next){
         var dadoOximetro = req.body.data[0];
         valorOximetro = dadoOximetro.Oximetro.value;
-        console.log("AQUI NA OX: " + valorOximetro);
+        console.log("Oximetro: "+valorOximetro);
+        // valorOximetro = parseInt(dadoOximetro.Oximetro.value);
+        // countMsg++;
+        // var instanteAtual = new Date();
+
+        // var atual = (instanteAtual.getSeconds()*1000)+ instanteAtual.getMilliseconds();
+        // var latencia = atual - valorOximetro;
+        // if(latencia < 0) {
+        //     latencia += 60000;
+        // }        
+        // latenciaTotal+=latencia;
+        // console.log("**Oximetro**")
+        // console.log("atual : "+atual);
+        // console.log("recebido: " + valorOximetro);
+        // console.log("latencia: "+latencia);
+        // console.log("Quantidade msgs : "+countMsg);
+        // if(countMsg > 0) console.log("Latencia Media : "+latenciaTotal/countMsg);
+        // console.log("\n");
         res.send("OK");
     }
 
     controllerDados.getEcg = function(req, res, next){
         var dadoEcg = req.body.data[0];
         valorEcg = dadoEcg.Ecg.value;
-        console.log("AQUI NO ECG: " + valorEcg);
+        console.log("ECG: "+ valorEcg)
+        // valorEcg = parseInt(dadoEcg.Ecg.value);
+        // countMsg++;
+        // var instanteAtual = new Date();
+
+        // var atual = (instanteAtual.getSeconds()*1000)+ instanteAtual.getMilliseconds();
+        // var latencia = atual - valorEcg;
+        // if(latencia < 0) {
+        //     latencia += 60000;
+        // }        
+        // latenciaTotal+=latencia;
+        // console.log("**ECG**")
+        // console.log("atual : "+atual);
+        // console.log("recebido: " + valorEcg);
+        // console.log("latencia: "+latencia);
+        // console.log("Quantidade msgs : "+countMsg);
+        // if(countMsg > 0) console.log("Latencia Media : "+latenciaTotal/countMsg);
+        // console.log("\n");
         res.send("OK");
     }
+
+    controllerDados.getBpm = function(req, res, next){
+        var dadoBpm = req.body.data[0];
+        valorBpm = dadoBpm.BPM.value;
+        console.log("BPM: "+ valorBpm);
+        // valorEcg = parseInt(dadoEcg.Ecg.value);
+        // countMsg++;
+        // var instanteAtual = new Date();
+
+        // var atual = (instanteAtual.getSeconds()*1000)+ instanteAtual.getMilliseconds();
+        // var latencia = atual - valorEcg;
+        // if(latencia < 0) {
+        //     latencia += 60000;
+        // }        
+        // latenciaTotal+=latencia;
+        // console.log("**ECG**")
+        // console.log("atual : "+atual);
+        // console.log("recebido: " + valorEcg);
+        // console.log("latencia: "+latencia);
+        // console.log("Quantidade msgs : "+countMsg);
+        // if(countMsg > 0) console.log("Latencia Media : "+latenciaTotal/countMsg);
+        // console.log("\n");
+        res.send("OK");
+    }    
 
     controllerDados.buscarDados = function(req, res) {
         var dados = []
@@ -145,10 +225,64 @@ const getApiAndEmitOximeter = socket => {
     const oximeter = JSON.parse('{ "oximeter":"'+valorOximetro+'" , "horario": "'+new Date()+'"}')
     socket.emit("Oximeter", oximeter);   
 };
-const getApiAndEmitEcg = socket => {
-    const BPM = JSON.parse('{ "BPM":"'+valorEcg+'", "horario": "'+new Date()+'"}')
+const getApiAndEmitBpm = socket => {
+    const BPM = JSON.parse('{ "BPM":"'+valorBpm+'", "horario": "'+new Date()+'"}')
     socket.emit("BPM", BPM);   
 };
+const getApiAndEmitEcg = socket => {
+    const ECG = JSON.parse('{ "ECG":"'+valorEcg+'", "horario": "'+new Date()+'"}')
+    socket.emit("ECG", ECG);   
+};
+
+const verifyTemperature = function(maxAlerts){
+    if(valorTemperatura < 35 || valorTemperatura > 37.5){
+        errosTemperatura += 1;
+        console.log("Erros temperatura : " + errosTemperatura);
+    }else{
+        errosTemperatura = 0;
+    }
+    if(errosTemperatura >= maxAlerts){
+        errosTemperatura = 0;
+        var subject = "Saúde em risco";
+        var text = "A temperatura do paciente está fora dos padrões normais de saúde - ";
+        var destiny = "felipealmeida903@alu.ufc.br";
+        sendEmail(subject, text, destiny);
+    }
+}
+
+
+const verifyBPM = function(maxAlerts){
+    if(valorBpm > 90 || valorBpm < 50){
+        errosBPM += 1;
+        console.log("Erros BPM  : " + errosBPM);
+    }else{
+        errosBPM = 0;
+    }
+    if(errosBPM >= maxAlerts){
+        errosBPM = 0;
+        var subject = "Saúde em risco";
+        var text = "Os batimentos cardíacos do paciente estão fora dos padrões normais de saúde - ";
+        var destiny = "felipealmeida903@alu.ufc.br";
+        sendEmail(subject, text, destiny);
+    }
+}
+
+const verifyOximeter = function(maxAlerts){
+    if(valorOximetro < 90){
+        errosOximetro += 1;
+        console.log("Erros oximetro : " + errosOximetro);
+    }else{
+        errosOximetro = 0;
+    }
+    if(errosOximetro >= maxAlerts){
+        errosOximetro = 0;
+        var subject = "Saúde em risco";
+        var text = "A concentração de oxigênio do paciente está fora dos padrões normais de saúde - ";
+        var destiny = "felipealmeida903@alu.ufc.br";
+        sendEmail(subject, text, destiny);
+    }
+}
+
 
 const saveDataPacient = function(){
     var data = new Date();
@@ -198,7 +332,11 @@ module.exports = {
     controllerFunction,
     getApiAndEmitTemperature,
     getApiAndEmitOximeter,
+    getApiAndEmitBpm,
     getApiAndEmitEcg,
+    verifyTemperature,
+    verifyBPM,
+    verifyOximeter,
     saveDataPacient,
     cleanDados
 }
