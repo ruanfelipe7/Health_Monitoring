@@ -29,9 +29,12 @@ let interval3;
 let interval4;
 let intervalSave = 0;
 
-var maxAlertsTemperature = 10;
+var maxAlertsTemperature = 3;
 var maxAlertsBPM = 10;
 var maxAlertsOximeter = 10;
+
+
+var timeMinAlert = 30;
 
 
 io.on("connection", (socket) => {
@@ -49,12 +52,14 @@ io.on("connection", (socket) => {
 		clearInterval(interval4);
 	}
 	interval = setInterval(() => { apiEmitTemperature(socket); 
-									verifyTemperature(maxAlertsTemperature); }, 2000);
+									verifyTemperature(maxAlertsTemperature, timeMinAlert); }, 2000);
 	interval2 = setInterval(() => { apiEmitEcg(socket); }, 100);
+	
 	interval3 = setInterval(() => { apiEmitOximeter(socket);
-									verifyOximeter(maxAlertsOximeter); }, 2000);
-	interval4 = setInterval(() => { apiEmitBpm(socket); 
-									verifyBPM(maxAlertsBPM); }, 2000);
+									verifyOximeter(maxAlertsOximeter, timeMinAlert); }, 2000);
+	
+									interval4 = setInterval(() => { apiEmitBpm(socket); 
+									verifyBPM(maxAlertsBPM, timeMinAlert); }, 2000);
 	socket.on("disconnect", () => {
 		console.log("Client disconnected");
 		clearInterval(interval);
