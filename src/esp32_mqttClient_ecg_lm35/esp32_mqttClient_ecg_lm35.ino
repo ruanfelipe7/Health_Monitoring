@@ -28,10 +28,10 @@ int BROKER_PORT = 1883;                      // Porta do Broker MQTT
 #define ID_MQTT  "Sensor ECG"            //Informe um ID unico e seu. Caso sejam usados IDs repetidos a ultima conexão irá sobrepor a anterior. 
 
 //topicos 
-#define TOPIC_PUBLISH_ECG "/4jggokgpepnvsb2uv4s40d59oc/ecg001/attrs"                  //Informe um Tópico único. Caso sejam usados tópicos em duplicidade, o último irá eliminar o anterior.
-#define TOPIC_PUBLISH_ECG_BPM "/4jggokgpepnvsb2uv4s40d59oc/bpm001/attrs"
-#define TOPIC_PUBLISH_TEMPERATURA "/4jggokgpepnvsb2uv4s40d59oc/temperatura001/attrs"
-#define TOPIC_PUBLISH_OXIMETRO "/4jggokgpepnvsb2uv4s40d59oc/oximetro001/attrs"
+#define TOPIC_PUBLISH_ECG "/4jggokgpepnvsb2uv4s40d59oc/ecg002/attrs"                  //Informe um Tópico único. Caso sejam usados tópicos em duplicidade, o último irá eliminar o anterior.
+#define TOPIC_PUBLISH_ECG_BPM "/4jggokgpepnvsb2uv4s40d59oc/bpm002/attrs"
+#define TOPIC_PUBLISH_TEMPERATURA "/4jggokgpepnvsb2uv4s40d59oc/temperatura002/attrs"
+#define TOPIC_PUBLISH_OXIMETRO "/4jggokgpepnvsb2uv4s40d59oc/oximetro002/attrs"
 
 
 PubSubClient MQTT(wifiClient);        // Instancia o Cliente MQTT passando o objeto espClient
